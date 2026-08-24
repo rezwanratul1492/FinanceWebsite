@@ -1,0 +1,996 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#071017" />
+  <meta name="description" content="Personal academic website of Md Rezwan Hossain Ratul, Assistant Professor of Finance at Francis Marion University." />
+  <title>Md Rezwan Hossain Ratul | Assistant Professor of Finance</title>
+  <style>
+:root {
+  --bg: #071017;
+  --text: #f4efe6;
+  --muted: #aab3b8;
+  --gold: #d8ad67;
+  --line: rgba(255,255,255,.13);
+  --panel: rgba(7,16,23,.56);
+  --font-sans: "DM Sans", system-ui, sans-serif;
+  --font-serif: "Playfair Display", Georgia, serif;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; background: var(--bg); }
+body { margin: 0; color: var(--text); font-family: var(--font-sans); background: var(--bg); overflow-x: hidden; }
+a { color: inherit; }
+button, a { -webkit-tap-highlight-color: transparent; }
+.sr-only { position: absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
+
+#morph-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display:block; }
+.noise { position: fixed; inset:0; z-index:1; pointer-events:none; opacity:.065; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E"); mix-blend-mode:soft-light; }
+.vignette { position: fixed; inset:0; z-index:2; pointer-events:none; box-shadow: inset 0 0 180px rgba(0,0,0,.58); }
+
+.site-header { position: fixed; z-index:20; top:0; left:0; width:100%; display:flex; align-items:center; justify-content:space-between; padding:22px 36px; transition:background .3s ease, border .3s ease; }
+.site-header.scrolled { background:rgba(5,12,17,.68); backdrop-filter: blur(16px); border-bottom:1px solid rgba(255,255,255,.08); }
+.brand { display:flex; align-items:center; gap:12px; text-decoration:none; }
+.brand-mark { display:grid; place-items:center; width:38px; height:38px; border:1px solid rgba(216,173,103,.56); border-radius:50%; font-family:var(--font-serif); font-size:18px; color:var(--gold); }
+.brand-copy { display:flex; flex-direction:column; line-height:1.05; }
+.brand-copy strong { font-family:var(--font-serif); font-size:16px; font-weight:500; letter-spacing:.02em; }
+.brand-copy small { color:#8f9aa0; font-size:10px; text-transform:uppercase; letter-spacing:.16em; margin-top:4px; }
+.site-nav { display:flex; align-items:center; gap:25px; }
+.site-nav a { position:relative; color:#c0c7ca; text-decoration:none; text-transform:uppercase; font-size:11px; letter-spacing:.14em; padding:8px 0; transition:color .25s ease; }
+.site-nav a::after { content:""; position:absolute; left:0; right:100%; bottom:1px; height:1px; background:var(--gold); transition:right .3s ease; }
+.site-nav a:hover, .site-nav a.active { color:#fff4dc; }
+.site-nav a.active::after { right:0; }
+.menu-toggle { display:none; }
+
+.scene-meter { position: fixed; z-index:10; right:34px; top:50%; transform:translateY(-50%); display:flex; align-items:center; gap:12px; pointer-events:none; }
+.meter-track { width:1px; height:140px; background:rgba(255,255,255,.16); position:relative; overflow:hidden; }
+.meter-track span { position:absolute; top:0; left:0; width:100%; height:0; background:var(--gold); box-shadow:0 0 18px rgba(216,173,103,.7); }
+.meter-copy { display:flex; flex-direction:column; gap:3px; min-width:76px; }
+#scene-number { color:var(--gold); font-family:var(--font-serif); font-size:18px; }
+#scene-name { color:#96a0a5; font-size:10px; letter-spacing:.15em; text-transform:uppercase; }
+
+.story-section { position:relative; z-index:4; min-height:100svh; display:flex; align-items:center; padding:110px 8vw 80px; }
+.story-section::before { content:""; position:absolute; inset:0; pointer-events:none; background:linear-gradient(90deg, rgba(5,12,17,.48) 0%, rgba(5,12,17,.10) 44%, rgba(5,12,17,.08) 100%); opacity:.9; }
+.story-section:nth-of-type(3)::before, .story-section:nth-of-type(5)::before { background:linear-gradient(270deg, rgba(5,12,17,.48) 0%, rgba(5,12,17,.10) 44%, rgba(5,12,17,.08) 100%); }
+.section-inner { position:relative; z-index:3; width:min(1240px,100%); margin:0 auto; }
+.align-left { display:flex; justify-content:flex-start; }
+.align-right { display:flex; justify-content:flex-end; }
+.center-copy { display:flex; justify-content:center; text-align:center; }
+
+.hero-copy { max-width:1240px; padding-top:2vh; }
+.hero-copy > * { max-width:690px; }
+.eyebrow { color:var(--gold); font-size:11px; font-weight:600; letter-spacing:.22em; text-transform:uppercase; margin:0 0 20px; }
+h1, h2 { margin:0; font-family:var(--font-serif); font-weight:500; letter-spacing:-.035em; line-height:.98; }
+h1 { font-size:clamp(64px,8vw,126px); max-width:880px!important; text-wrap:balance; }
+h1 em, h2 em { color:#e4bd79; font-weight:500; }
+.lede { color:#c2c9cc; font-size:clamp(17px,1.6vw,22px); line-height:1.6; max-width:590px!important; margin:28px 0 0; }
+.hero-actions { display:flex; gap:12px; margin-top:34px; }
+.hero-actions.centered { justify-content:center; }
+.button { display:inline-flex; align-items:center; justify-content:center; min-height:46px; padding:0 20px; border-radius:999px; text-decoration:none; font-size:12px; font-weight:600; letter-spacing:.06em; transition:transform .25s ease, background .25s ease, border .25s ease; }
+.button:hover { transform:translateY(-2px); }
+.button.primary { background:#ead0a0; color:#0a1115; }
+.button.ghost { border:1px solid rgba(255,255,255,.20); background:rgba(255,255,255,.035); backdrop-filter:blur(10px); }
+.button.small { min-height:40px; padding:0 17px; }
+.scroll-cue { position:absolute; left:8vw; bottom:30px; z-index:4; display:flex; align-items:center; gap:12px; color:#8e999e; font-size:10px; letter-spacing:.16em; text-transform:uppercase; }
+.scroll-cue i { width:44px; height:1px; background:rgba(255,255,255,.23); position:relative; overflow:hidden; }
+.scroll-cue i::after { content:""; position:absolute; width:16px; height:100%; left:-16px; background:var(--gold); animation:cue 2s infinite ease-in-out; }
+@keyframes cue { 0%{transform:translateX(0)} 70%,100%{transform:translateX(60px)} }
+
+.content-card { width:min(540px,100%); padding:30px; background:linear-gradient(145deg, rgba(5,13,18,.74), rgba(9,19,25,.49)); border:1px solid rgba(255,255,255,.12); border-radius:24px; backdrop-filter:blur(18px); box-shadow:0 24px 80px rgba(0,0,0,.24); }
+.content-card.wide-card { width:min(620px,100%); }
+.content-card h2 { font-size:clamp(42px,4.6vw,72px); line-height:1.01; }
+.content-card > p:not(.eyebrow) { color:#b9c2c6; font-size:15px; line-height:1.72; margin:22px 0 0; }
+.stat-row { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:24px; }
+.stat-row span { padding:15px 0; border-top:1px solid rgba(255,255,255,.12); display:flex; flex-direction:column; gap:3px; }
+.stat-row strong { font-family:var(--font-serif); font-size:18px; font-weight:500; }
+.stat-row small { color:#849095; font-size:11px; }
+.tag-list { display:flex; flex-wrap:wrap; gap:8px; margin-top:24px; }
+.tag-list span { border:1px solid rgba(255,255,255,.13); background:rgba(255,255,255,.035); color:#d0d5d7; padding:8px 11px; border-radius:999px; font-size:10px; letter-spacing:.04em; }
+.text-link { display:inline-flex; gap:10px; align-items:center; color:#efc77f; margin-top:23px; text-decoration:none; font-size:12px; text-transform:uppercase; letter-spacing:.12em; }
+.text-link span { transition:transform .25s ease; }.text-link:hover span{transform:translate(3px,-3px)}
+.mini-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:9px; margin-top:24px; }
+.mini-grid article { min-height:125px; padding:14px; border:1px solid rgba(255,255,255,.10); border-radius:15px; background:rgba(255,255,255,.025); display:flex; flex-direction:column; justify-content:flex-end; }
+.mini-grid strong { font-family:var(--font-serif); color:#efd19b; font-size:16px; font-weight:500; margin-bottom:5px; }
+.mini-grid span { color:#8e999e; font-size:10px; line-height:1.45; }
+.publication-list { margin-top:22px; border-top:1px solid rgba(255,255,255,.12); }
+.publication-list article { display:grid; grid-template-columns:34px 1fr 20px; gap:12px; align-items:center; padding:16px 2px; border-bottom:1px solid rgba(255,255,255,.10); }
+.publication-list article > span { color:var(--gold); font-family:var(--font-serif); font-size:14px; }
+.publication-list div { display:flex; flex-direction:column; gap:3px; }
+.publication-list strong { font-size:13px; font-weight:500; }.publication-list small{color:#7f8b90;font-size:10px}.publication-list b{color:#8e999e;font-weight:400}
+.journey-points { display:grid; grid-template-columns:repeat(3,1fr); gap:16px; position:relative; margin:27px 0 26px; }
+.journey-points::before { content:""; position:absolute; height:1px; left:7px; right:7px; top:7px; background:rgba(255,255,255,.14); }
+.journey-points span { position:relative; display:flex; flex-direction:column; gap:3px; padding-top:20px; }
+.journey-points i { position:absolute; left:0; top:1px; width:13px; height:13px; border:2px solid var(--gold); background:#0b151b; border-radius:50%; box-shadow:0 0 16px rgba(216,173,103,.45); }
+.journey-points strong{font-family:var(--font-serif);font-size:15px;font-weight:500}.journey-points small{color:#7f8b90;font-size:9px}
+.contact-copy { max-width:760px; }
+.contact-copy h2 { font-size:clamp(56px,7vw,105px); }
+.contact-copy > p:not(.eyebrow):not(.fine-print) { color:#b8c0c3; font-size:17px; line-height:1.6; max-width:560px; margin:26px auto 0; }
+.fine-print { margin-top:26px!important; color:#657177!important; font-size:10px!important; letter-spacing:.04em; }
+
+.reveal { opacity:0; transform:translateY(22px); transition:opacity .8s cubic-bezier(.2,.8,.2,1), transform .8s cubic-bezier(.2,.8,.2,1); }
+.reveal.visible { opacity:1; transform:none; }
+
+@media (max-width: 960px) {
+  .site-header { padding:18px 20px; }
+  .menu-toggle { display:grid; width:42px; height:42px; place-content:center; gap:6px; border:1px solid rgba(255,255,255,.13); border-radius:50%; background:rgba(7,16,23,.55); color:white; }
+  .menu-toggle span:not(.sr-only){display:block;width:15px;height:1px;background:#fff;}
+  .site-nav { position:absolute; top:68px; left:16px; right:16px; display:grid; gap:0; padding:10px; background:rgba(4,11,16,.94); border:1px solid rgba(255,255,255,.10); border-radius:17px; backdrop-filter:blur(18px); transform-origin:top; opacity:0; transform:scaleY(.92) translateY(-8px); pointer-events:none; transition:.22s ease; }
+  .site-nav.open { opacity:1; transform:none; pointer-events:auto; }
+  .site-nav a { padding:12px 9px; }
+  .scene-meter { right:12px; }.meter-copy{display:none}.meter-track{height:110px}
+  .story-section { padding:100px 22px 60px; min-height:100svh; }
+  .story-section::before, .story-section:nth-of-type(3)::before, .story-section:nth-of-type(5)::before { background:linear-gradient(0deg, rgba(5,12,17,.64), rgba(5,12,17,.08) 72%); }
+  .hero-copy { padding-top:14vh; }
+  h1 { font-size:clamp(55px,16vw,85px); }
+  .align-left,.align-right { justify-content:center; align-items:flex-end; min-height:70vh; }
+  .content-card { padding:23px; border-radius:20px; }
+  .content-card h2{font-size:clamp(39px,11vw,58px)}
+  .mini-grid { grid-template-columns:1fr; }.mini-grid article{min-height:80px}
+  .scroll-cue { left:22px; }
+}
+
+@media (max-width: 560px) {
+  .brand-copy small { display:none; }
+  .hero-actions { flex-direction:column; align-items:stretch; width:min(320px,100%); }
+  .button { width:100%; }
+  .stat-row, .journey-points { grid-template-columns:1fr; }
+  .journey-points::before{left:6px;top:7px;bottom:7px;width:1px;height:auto;right:auto}.journey-points span{padding:0 0 0 26px}.journey-points i{top:2px}
+  .publication-list article{grid-template-columns:27px 1fr 12px}
+}
+
+
+.awards-list { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-top:24px; }
+.awards-list article { min-height:128px; padding:16px; border:1px solid rgba(255,255,255,.10); border-radius:16px; background:rgba(255,255,255,.025); display:flex; flex-direction:column; justify-content:space-between; gap:14px; }
+.awards-list .award-year { color:var(--gold); font-size:9px; font-weight:700; letter-spacing:.16em; }
+.awards-list article div { display:flex; flex-direction:column; gap:5px; }
+.awards-list strong { font-family:var(--font-serif); color:#efd19b; font-size:16px; font-weight:500; line-height:1.25; }
+.awards-list small { color:#8e999e; font-size:10px; line-height:1.45; }
+@media (max-width: 560px) { .awards-list { grid-template-columns:1fr; } .awards-list article { min-height:108px; } }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior:auto; }
+  *, *::before, *::after { animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; }
+}
+
+
+/* Personalized home section */
+.hero-tagline {
+  margin: 18px 0 0;
+  color: #efd09a;
+  font-family: var(--font-serif);
+  font-size: clamp(20px, 2vw, 30px);
+  line-height: 1.25;
+  letter-spacing: .01em;
+}
+.hero .lede { max-width: 720px!important; font-size: clamp(15px, 1.35vw, 19px); line-height: 1.72; }
+.hero-actions { flex-wrap: wrap; }
+.professional-links { display:flex; flex-wrap:wrap; gap:18px; margin-top:20px; }
+.professional-links a { color:#98a4a9; text-decoration:none; font-size:11px; letter-spacing:.10em; text-transform:uppercase; transition:color .25s ease; }
+.professional-links a span { color:var(--gold); }
+.professional-links a:hover { color:#fff4dc; }
+@media (max-width: 560px) {
+  .professional-links { gap:12px 16px; margin-top:18px; }
+  .professional-links a { font-size:10px; }
+  .hero-tagline { font-size:20px; }
+}
+
+/* Personalized About section */
+.about-card {
+  width: min(760px, 100%);
+  padding: 32px 34px;
+}
+.about-card h2 {
+  max-width: 680px;
+  font-size: clamp(42px, 4.4vw, 70px);
+}
+.about-card .about-intro,
+.about-card .about-closing {
+  color: #bcc5c9;
+  font-size: 14px;
+  line-height: 1.72;
+  margin: 20px 0 0;
+  max-width: 700px;
+}
+.about-card .about-closing {
+  margin-top: 18px;
+  color: #aeb8bc;
+}
+.why-note {
+  display: grid;
+  grid-template-columns: 100px 1fr;
+  gap: 18px;
+  align-items: center;
+  margin-top: 22px;
+  padding: 17px 18px;
+  border: 1px solid rgba(216,173,103,.24);
+  border-radius: 18px;
+  background: linear-gradient(135deg, rgba(216,173,103,.09), rgba(255,255,255,.025));
+}
+.why-mark {
+  font-family: var(--font-serif);
+  font-size: 27px;
+  color: #efca88;
+  letter-spacing: -.02em;
+}
+.why-note p {
+  margin: 0;
+  color: #c1c9cc;
+  font-size: 13px;
+  line-height: 1.62;
+}
+.why-note em { color: #efca88; font-style: normal; }
+.education-block { margin-top: 22px; }
+.education-label {
+  margin: 0 0 8px;
+  color: #d8ad67;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+}
+.education-list { border-top: 1px solid rgba(255,255,255,.12); }
+.education-list article {
+  display: grid;
+  grid-template-columns: 58px 1fr;
+  gap: 15px;
+  align-items: start;
+  padding: 13px 0;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+.degree-year {
+  color: #d8ad67;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  padding-top: 1px;
+}
+.education-list article div { display: flex; flex-direction: column; gap: 3px; }
+.education-list strong { font-size: 13px; font-weight: 500; color: #eee8df; }
+.education-list small { color: #849095; font-size: 10px; line-height: 1.45; }
+
+@media (max-width: 960px) {
+  .about-card { width: min(720px,100%); padding: 24px; }
+  .why-note { grid-template-columns: 78px 1fr; }
+  .why-mark { font-size: 23px; }
+}
+@media (max-width: 560px) {
+  .about-card .about-intro, .about-card .about-closing { font-size: 13px; }
+  .why-note { grid-template-columns: 1fr; gap: 7px; }
+  .education-list article { grid-template-columns: 48px 1fr; gap: 11px; }
+}
+
+
+/* Research and academic service */
+.research-featured { display:grid; gap:10px; margin-top:24px; }
+.research-featured article { padding:14px 15px; border:1px solid rgba(255,255,255,.10); border-radius:14px; background:rgba(255,255,255,.025); }
+.research-featured strong { display:block; font-family:var(--font-serif); color:#edd09b; font-size:15px; font-weight:500; line-height:1.35; }
+.research-featured small { display:block; color:#879399; font-size:10px; line-height:1.5; margin-top:5px; text-transform:uppercase; letter-spacing:.07em; }
+.publication-list article.no-link { grid-template-columns:34px 1fr auto; }
+.publication-status { color:#d8ad67!important; font-size:9px!important; text-transform:uppercase; letter-spacing:.08em; white-space:nowrap; }
+.service-columns { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-top:24px; }
+.service-panel { padding:17px; border:1px solid rgba(255,255,255,.10); border-radius:16px; background:rgba(255,255,255,.025); }
+.service-panel h3 { margin:0 0 10px; font-family:var(--font-serif); color:#efd19b; font-size:18px; font-weight:500; }
+.service-panel > p { margin:0 0 12px; color:#8d999e; font-size:10px; line-height:1.55; }
+.service-list { display:grid; gap:9px; margin:0; padding:0; list-style:none; }
+.service-list li { display:flex; justify-content:space-between; gap:12px; padding-top:9px; border-top:1px solid rgba(255,255,255,.08); color:#c9d0d3; font-size:10px; line-height:1.45; }
+.service-list li span:last-child { color:#7f8b90; text-align:right; flex:0 0 auto; }
+@media (max-width: 680px) {
+  .service-columns { grid-template-columns:1fr; }
+  .publication-list article.no-link { grid-template-columns:28px 1fr; }
+  .publication-status { grid-column:2; justify-self:start; }
+}
+
+
+/* Teaching section */
+.teaching-card { width:min(760px,100%); }
+.teaching-layout { display:grid; grid-template-columns:1.25fr .85fr; gap:12px; margin-top:26px; }
+.teaching-panel { border:1px solid rgba(255,255,255,.11); border-radius:17px; background:rgba(255,255,255,.025); overflow:hidden; }
+.panel-heading { display:flex; align-items:center; justify-content:space-between; gap:16px; padding:14px 16px; border-bottom:1px solid rgba(255,255,255,.10); }
+.panel-heading > span { font-family:var(--font-serif); color:#efd19b; font-size:17px; }
+.panel-heading small { color:#7f8b90; font-size:9px; text-transform:uppercase; letter-spacing:.12em; }
+.course-list { display:flex; flex-direction:column; }
+.course-row { display:flex; align-items:flex-start; justify-content:space-between; gap:18px; padding:12px 16px; border-bottom:1px solid rgba(255,255,255,.075); }
+.course-row:last-child { border-bottom:0; }
+.course-row strong { font-size:12px; font-weight:500; line-height:1.4; color:#e8ecec; }
+.course-row span { flex:0 0 auto; color:#889399; font-size:9px; letter-spacing:.04em; line-height:1.5; text-align:right; }
+.tools-panel { padding-bottom:16px; }
+.tools-panel > p { margin:15px 16px 0; color:#9ca7ab; font-size:11px; line-height:1.6; }
+.tool-tags { display:flex; flex-wrap:wrap; gap:7px; margin:15px 16px 0; }
+.tool-tags span { padding:7px 10px; border:1px solid rgba(216,173,103,.22); border-radius:999px; background:rgba(216,173,103,.055); color:#e0c18d; font-size:9px; letter-spacing:.07em; text-transform:uppercase; }
+.why-note { display:flex; flex-direction:column; gap:4px; margin:17px 16px 0; padding:14px; border-left:2px solid var(--gold); background:rgba(216,173,103,.045); }
+.why-note strong { font-family:var(--font-serif); color:#f0cf96; font-size:20px; font-weight:500; }
+.why-note span { color:#8e999e; font-size:10px; line-height:1.5; }
+@media (max-width: 760px) {
+  .teaching-layout { grid-template-columns:1fr; }
+  .teaching-card { width:min(620px,100%); }
+}
+@media (max-width: 560px) {
+  .course-row { flex-direction:column; gap:3px; }
+  .course-row span { text-align:left; }
+}
+
+
+/* Hobbies */
+.hobby-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; margin-top:24px; }
+.hobby-grid article { min-height:108px; padding:17px; border:1px solid rgba(255,255,255,.11); border-radius:16px; background:linear-gradient(145deg,rgba(255,255,255,.04),rgba(255,255,255,.015)); display:flex; flex-direction:column; justify-content:space-between; transition:transform .25s ease,border-color .25s ease,background .25s ease; }
+.hobby-grid article:hover { transform:translateY(-3px); border-color:rgba(216,173,103,.35); background:rgba(216,173,103,.045); }
+.hobby-index { color:var(--gold); font-size:10px; letter-spacing:.16em; }
+.hobby-grid strong { font-family:var(--font-serif); font-size:23px; font-weight:500; color:#f1e7d5; }
+@media (max-width:560px) { .hobby-grid { grid-template-columns:1fr 1fr; } .hobby-grid article { min-height:92px; } .hobby-grid strong { font-size:19px; } }
+
+</style>
+</head>
+<body>
+  <canvas id="morph-canvas" aria-hidden="true"></canvas>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="vignette" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="brand" href="#home" aria-label="Go to home">
+      <span class="brand-mark" id="brand-mark">R</span>
+      <span class="brand-copy"><strong id="brand-name">Md Rezwan H Ratul</strong><small id="brand-subtitle">Francis Marion University</small></span>
+    </a>
+
+    <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="site-nav">
+      <span></span><span></span>
+      <span class="sr-only">Toggle navigation</span>
+    </button>
+
+    <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
+      <a href="#home" data-index="0">Home</a>
+      <a href="#about" data-index="1">About</a>
+      <a href="#research" data-index="2">Research</a>
+      <a href="#teaching" data-index="3">Teaching</a>
+      <a href="#publications" data-index="4">Papers</a>
+      <a href="#service" data-index="5">Service</a>
+      <a href="#awards" data-index="6">Awards</a>
+      <a href="#hobbies" data-index="7">Hobbies</a>
+      <a href="#contact" data-index="8">Contact</a>
+    </nav>
+  </header>
+
+  <aside class="scene-meter" aria-hidden="true">
+    <div class="meter-track"><span id="meter-progress"></span></div>
+    <div class="meter-copy"><span id="scene-number">01</span><span id="scene-name">Origin</span></div>
+  </aside>
+
+  <main id="story">
+    <section class="story-section hero" id="home" data-scene="0">
+      <div class="section-inner hero-copy">
+        <p class="eyebrow reveal" id="home-eyebrow">ASSISTANT PROFESSOR OF FINANCE · FRANCIS MARION UNIVERSITY</p>
+        <h1 class="reveal" id="home-title">Md Rezwan Hossain<br><em>Ratul</em></h1>
+        <p class="hero-tagline reveal">Educator · Researcher · Gamer · Musician</p>
+        <p class="lede reveal">Hello everyone. This is Rezwan. Welcome to my website. I aspire to become a Full Professor of Finance one day, driven by a passion for teaching alongside conducting quality research. Beyond academia, I love watching movies, playing games, and engaging in music.</p>
+        <div class="hero-actions reveal">
+          <a class="button primary" href="#research">Research</a>
+          <a class="button ghost" href="#teaching">Teaching</a>
+          <a class="button ghost" href="#hobbies">Hobbies</a>
+          <a class="button ghost" href="#contact">Contact Me</a>
+        </div>
+        <div class="professional-links reveal" aria-label="Professional profiles">
+          <a href="https://www.linkedin.com/in/mdrezwanhratul/" target="_blank" rel="noopener">LinkedIn <span>↗</span></a>
+          <a href="https://scholar.google.com/citations?hl=en&amp;authuser=1&amp;user=27se0i0AAAAJ" target="_blank" rel="noopener">Google Scholar <span>↗</span></a>
+          <a href="mailto:dr.rezwanfmu@gmail.com">Email <span>↗</span></a>
+        </div>
+      </div>
+      <div class="scroll-cue" aria-hidden="true"><span>Scroll to explore</span><i></i></div>
+    </section>
+
+    <section class="story-section" id="about" data-scene="1">
+      <div class="section-inner align-left">
+        <div class="content-card about-card reveal">
+          <p class="eyebrow">01 · ABOUT · BANGLADESH → UNITED STATES</p>
+          <h2 id="about-heading">I keep coming back to one question:<br><em>Why?</em></h2>
+          <p class="about-intro">I am originally from Bangladesh, and my path into finance began during my undergraduate studies at North South University. I was drawn to finance because of the analytical way it helps us make sense of decisions. Over time, I realized that I enjoyed not only learning those ideas, but also helping others understand them—and that gradually led me toward academia.</p>
+
+          <div class="why-note" aria-label="Teaching philosophy">
+            <span class="why-mark">WHY?</span>
+            <p>In teaching, I often begin with that question. I believe understanding <em>why</em> something works gives us a stronger foundation for understanding everything that follows.</p>
+          </div>
+
+          <div class="education-block">
+            <p class="education-label">Education</p>
+            <div class="education-list">
+              <article>
+                <span class="degree-year">Ph.D.</span>
+                <div><strong>Ph.D. in Business Administration — Finance Concentration</strong><small>University of Texas Rio Grande Valley · Edinburg, Texas</small></div>
+              </article>
+              <article>
+                <span class="degree-year">MBA</span>
+                <div><strong>Master of Business Administration — Financial Management</strong><small>National University · Los Angeles, California</small></div>
+              </article>
+              <article>
+                <span class="degree-year">BBA</span>
+                <div><strong>Bachelor of Business Administration — Finance and Accounting</strong><small>North South University · Dhaka, Bangladesh</small></div>
+              </article>
+            </div>
+          </div>
+
+          <p class="about-closing">I hope to become the kind of professor students remember—not simply for what they learned, but for feeling comfortable asking questions and thinking for themselves. In research, I hope to contribute work that encourages thoughtful discussion and useful insight.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="story-section" id="research" data-scene="2">
+      <div class="section-inner align-right">
+        <div class="content-card reveal wide-card">
+          <p class="eyebrow">02 · RESEARCH</p>
+          <h2 id="research-heading">Questions about firms, behavior, and the environments around them.</h2>
+          <p id="research-body">My research interests are centered on corporate finance, behavioral finance, and corruption. I am interested in understanding how institutional conditions, organizational behavior, social dynamics, and information environments shape corporate decisions and outcomes.</p>
+          <div class="tag-list" id="research-topics" aria-label="Research interests">
+            <span>Corporate Finance</span><span>Behavioral Finance</span><span>Corruption</span>
+          </div>
+          <div class="research-featured" aria-label="Current research highlights">
+            <article><strong>Corruption and Investment Efficiency</strong><small>Under review · Journal of Business Ethics</small></article>
+            <article><strong>Measuring of Corporate Culture Washing</strong><small>Working paper</small></article>
+          </div>
+          <a class="text-link" id="research-link" href="#publications">View research papers <span>↗</span></a>
+        </div>
+      </div>
+    </section>
+
+    <section class="story-section" id="teaching" data-scene="3">
+      <div class="section-inner align-left">
+        <div class="content-card reveal teaching-card">
+          <p class="eyebrow">03 · TEACHING</p>
+          <h2 id="teaching-heading">Teaching starts with one question: <em>Why?</em></h2>
+          <p id="teaching-body">I believe that understanding why a financial concept works is the foundation for learning how and when to apply it. My goal is to make finance approachable, analytical, and useful—so students leave with reasoning they can carry beyond the classroom.</p>
+
+          <div class="teaching-layout">
+            <div class="teaching-panel course-panel">
+              <div class="panel-heading">
+                <span>Courses</span>
+                <small>Current &amp; previous</small>
+              </div>
+              <div class="course-list">
+                <div class="course-row"><strong>Financial Management</strong><span>Fall 2026</span></div>
+                <div class="course-row"><strong>Investments</strong><span>Fall 2026</span></div>
+                <div class="course-row"><strong>Financial Modelling in Excel</strong><span>Summer 2026</span></div>
+                <div class="course-row"><strong>Advanced Investments</strong><span>Fall 2025 · Spring 2026</span></div>
+                <div class="course-row"><strong>Corporate Finance</strong><span>Spring 2025</span></div>
+              </div>
+            </div>
+
+            <div class="teaching-panel tools-panel">
+              <div class="panel-heading">
+                <span>Classroom Tools</span>
+                <small>Teaching &amp; analysis</small>
+              </div>
+              <p>I use a mix of presentation, spreadsheet, and statistical tools to connect financial concepts with practical analysis.</p>
+              <div class="tool-tags" aria-label="Classroom software">
+                <span>PowerPoint</span><span>Excel</span><span>SAS</span><span>Stata</span>
+              </div>
+              <blockquote class="why-note"><strong>“Why?”</strong><span>Understanding the reason behind an idea makes the rest easier to learn.</span></blockquote>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story-section" id="publications" data-scene="4">
+      <div class="section-inner align-right">
+        <div class="content-card reveal wide-card">
+          <p class="eyebrow">04 · RESEARCH PAPERS</p>
+          <h2 id="publications-heading">Work in progress, questions in motion.</h2>
+          <p id="publications-body">Selected research projects at different stages of development and review.</p>
+          <div class="publication-list" id="publication-list">
+            <article class="no-link"><span>01</span><div><strong>Corruption and Investment Efficiency</strong><small>Journal of Business Ethics</small></div><b class="publication-status">Under review</b></article>
+            <article class="no-link"><span>02</span><div><strong>Measuring of Corporate Culture Washing</strong><small>Research project</small></div><b class="publication-status">Working paper</b></article>
+            <article class="no-link"><span>03</span><div><strong>Does Being Fair To LGBTQ+ Employees Benefit Corporations?</strong><small>Research project</small></div><b class="publication-status">Working paper</b></article>
+            <article class="no-link"><span>04</span><div><strong>Board Reform and Corporate Tax Avoidance: Worldwide Evidence</strong><small>Research project</small></div><b class="publication-status">Working paper</b></article>
+            <article class="no-link"><span>05</span><div><strong>Does Social Media Sentiment Affect Corporate ESG Performance: Evidence from YouTube</strong><small>Research project</small></div><b class="publication-status">Working paper</b></article>
+            <article class="no-link"><span>06</span><div><strong>Do Corporations Misuse Trust: An Empirical Study of Social Capital and Corporate Restatement Fraud</strong><small>Research project</small></div><b class="publication-status">Working paper</b></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story-section" id="service" data-scene="5">
+      <div class="section-inner align-left">
+        <div class="content-card reveal wide-card">
+          <p class="eyebrow">05 · ACADEMIC SERVICE</p>
+          <h2>Contributing to the academic community beyond my own research.</h2>
+          <p>I value the exchange of ideas that happens through conferences, paper discussions, session leadership, and peer review. These activities have given me opportunities to learn from others while contributing to the broader finance community.</p>
+          <div class="service-columns">
+            <div class="service-panel">
+              <h3>Conference Engagement</h3>
+              <p>Across these meetings, I have presented papers, discussed papers, and served as a session chair.</p>
+              <ul class="service-list">
+                <li><span>Financial Management Association (FMA)</span><span>2025</span></li>
+                <li><span>Southern Finance Association (SFA)</span><span>2025, 2026</span></li>
+                <li><span>Southwestern Finance Association (SWFA)</span><span>2024, 2025, 2026</span></li>
+              </ul>
+            </div>
+            <div class="service-panel">
+              <h3>Reviewing Service</h3>
+              <ul class="service-list">
+                <li><span>Financial Management Association (FMA)</span><span>2025</span></li>
+                <li><span>Southern Finance Association (SFA)</span><span>2026</span></li>
+                <li><span>Quarterly Journal of Finance &amp; Accounting</span><span>Reviewer</span></li>
+                <li><span>Southwestern Finance Association (SWFA)</span><span>2024, 2025</span></li>
+                <li><span>Eastern Finance Association (EFA)</span><span>2025</span></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story-section" id="awards" data-scene="6">
+      <div class="section-inner align-left">
+        <div class="content-card reveal wide-card">
+          <p class="eyebrow">06 · AWARDS &amp; HONORS</p>
+          <h2>Recognition along the journey.</h2>
+          <p>I am grateful for the opportunities and recognition I have received throughout my academic journey.</p>
+          <div class="awards-list" aria-label="Awards and honors">
+            <article>
+              <span class="award-year">APR 2022</span>
+              <div><strong>Presidential Research Fellowship (PRF)</strong><small>Issued by The University of Texas Rio Grande Valley</small></div>
+            </article>
+            <article>
+              <span class="award-year">JUN 2017</span>
+              <div><strong>Sigma Beta Delta</strong><small>Issued by Sigma Beta Delta</small></div>
+            </article>
+            <article>
+              <span class="award-year">JAN 2016</span>
+              <div><strong>International Student Leadership Scholarship</strong><small>Issued by National University</small></div>
+            </article>
+            <article>
+              <span class="award-year">SEP 2015</span>
+              <div><strong>International Prospective Student Scholarship</strong><small>Issued by National University</small></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story-section" id="hobbies" data-scene="7">
+      <div class="section-inner align-right">
+        <div class="content-card reveal wide-card">
+          <p class="eyebrow">07 · HOBBIES</p>
+          <h2>Life beyond academia.</h2>
+          <p>Outside teaching and research, I enjoy spending time with a few interests that let me relax, create, and explore different kinds of stories and experiences.</p>
+          <div class="hobby-grid" aria-label="Hobbies">
+            <article><span class="hobby-index">01</span><strong>Gaming</strong></article>
+            <article><span class="hobby-index">02</span><strong>Music</strong></article>
+            <article><span class="hobby-index">03</span><strong>Poetry</strong></article>
+            <article><span class="hobby-index">04</span><strong>Movies</strong></article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story-section contact-section" id="contact" data-scene="8">
+      <div class="section-inner center-copy">
+        <div class="contact-copy reveal">
+          <p class="eyebrow">08 · CONTACT</p>
+          <h2 id="contact-heading">Every path eventually<br><em>connects to people.</em></h2>
+          <p id="contact-body">For research conversations, academic collaboration, or professional inquiries.</p>
+          <div class="hero-actions centered">
+            <a class="button primary" id="contact-email" href="mailto:dr.rezwanfmu@gmail.com">Send an email</a>
+            <a class="button ghost" href="#home">Back to the beginning</a>
+          </div>
+          <p class="fine-print" id="contact-footer">Md Rezwan Hossain Ratul · Assistant Professor of Finance · Francis Marion University</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script>
+(() => {
+  const canvas = document.getElementById('morph-canvas');
+  const ctx = canvas.getContext('2d', { alpha: false });
+  const sections = [...document.querySelectorAll('.story-section')];
+  const navLinks = [...document.querySelectorAll('.site-nav a')];
+  const meter = document.getElementById('meter-progress');
+  const sceneNumber = document.getElementById('scene-number');
+  const sceneName = document.getElementById('scene-name');
+  const header = document.querySelector('.site-header');
+  const menuToggle = document.querySelector('.menu-toggle');
+  const nav = document.querySelector('.site-nav');
+  const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  const labels = ['Origin', 'Journey', 'Research', 'Teaching', 'Papers', 'Service', 'Awards', 'Hobbies', 'Connection'];
+  const palettes = [
+    ['#071017','#17202a','#d8ad67'],
+    ['#081017','#253044','#e0b56d'],
+    ['#04131a','#0b3440','#58a8b4'],
+    ['#091217','#29312c','#d7aa62'],
+    ['#0d1014','#38271c','#d0a065'],
+    ['#071419','#16323a','#71b7b4'],
+    ['#07101b','#242b44','#e3b66d'],
+    ['#100a18','#332141','#c88bd8'],
+    ['#020a12','#0a2740','#d8ad67']
+  ];
+
+  const COUNT = 48;
+  const clamp = (v,a,b) => Math.max(a,Math.min(b,v));
+  const lerp = (a,b,t) => a+(b-a)*t;
+  const smooth = t => t*t*(3-2*t);
+  const ease = t => 0.5 - Math.cos(Math.PI*t)/2;
+
+  function hexToRgb(hex){
+    const n = parseInt(hex.slice(1),16);
+    return [(n>>16)&255,(n>>8)&255,n&255];
+  }
+  function mixColor(a,b,t){
+    const A=hexToRgb(a), B=hexToRgb(b);
+    return `rgb(${A.map((v,i)=>Math.round(lerp(v,B[i],t))).join(',')})`;
+  }
+
+  function point(x,y,s=1){ return {x,y,s}; }
+
+  function sceneHome(){
+    const p=[];
+    // open book/page geometry across a desk
+    for(let i=0;i<24;i++){
+      const u=i/23;
+      const x=.19+u*.30;
+      const y=.59 + .035*Math.sin(u*Math.PI) + (u>.5 ? .012 : 0);
+      p.push(point(x,y,.9));
+    }
+    for(let i=0;i<24;i++){
+      const u=i/23;
+      const x=.51+u*.30;
+      const y=.60 + .035*Math.sin((1-u)*Math.PI) + (u<.5 ? .012 : 0);
+      p.push(point(x,y,.9));
+    }
+    return p;
+  }
+
+  function sceneAbout(){
+    const p=[];
+    // mountain ridge / path
+    for(let i=0;i<24;i++){
+      const u=i/23;
+      const ridge=.47 - .16*Math.sin(u*Math.PI*3.2) * (0.35+0.65*Math.sin(u*Math.PI));
+      p.push(point(.10+u*.80,ridge,.75));
+    }
+    for(let i=0;i<24;i++){
+      const u=i/23;
+      const x=.15+u*.70;
+      const y=.80 - .30*u + .04*Math.sin(u*Math.PI*2.5);
+      p.push(point(x,y,1.05));
+    }
+    return p;
+  }
+
+  function sceneResearch(){
+    const p=[];
+    const centers=[[.32,.40],[.63,.33],[.49,.62],[.76,.62]];
+    for(let i=0;i<COUNT;i++){
+      const c=centers[i%centers.length];
+      const ring=Math.floor(i/centers.length);
+      const a=(i*2.399963)+(i%4)*.3;
+      const r=.025 + ring*.009;
+      p.push(point(c[0]+Math.cos(a)*r,c[1]+Math.sin(a)*r,.65+(i%5)*.12));
+    }
+    return p;
+  }
+
+  function sceneTeaching(){
+    const p=[];
+    // board outline + student rows
+    for(let i=0;i<16;i++){
+      const edge=Math.floor(i/4), u=(i%4)/3;
+      let x,y;
+      if(edge===0){x=.28+u*.44;y=.25}
+      if(edge===1){x=.72;y=.25+u*.28}
+      if(edge===2){x=.72-u*.44;y=.53}
+      if(edge===3){x=.28;y=.53-u*.28}
+      p.push(point(x,y,.75));
+    }
+    for(let i=0;i<32;i++){
+      const row=Math.floor(i/8), col=i%8;
+      const x=.20+col*.085 + (row%2)*.018;
+      const y=.66+row*.07;
+      p.push(point(x,y,.7+(row*.08)));
+    }
+    return p;
+  }
+
+  function scenePublications(){
+    const p=[];
+    // pages fan from center
+    for(let i=0;i<24;i++){
+      const u=i/23;
+      p.push(point(.20+u*.29,.35 + .30*u + .035*Math.sin(u*Math.PI*2),.85));
+    }
+    for(let i=0;i<24;i++){
+      const u=i/23;
+      p.push(point(.80-u*.29,.35 + .30*u + .035*Math.sin(u*Math.PI*2),.85));
+    }
+    return p;
+  }
+
+  function sceneService(){
+    const p=[];
+    // Two interlocking peer-review / conference networks.
+    for(let i=0;i<24;i++){
+      const a=(i/24)*Math.PI*2;
+      p.push(point(.40+Math.cos(a)*.18,.50+Math.sin(a)*.13, i%6===0 ? 1.35 : .78));
+    }
+    for(let i=0;i<24;i++){
+      const a=(i/24)*Math.PI*2;
+      p.push(point(.65+Math.cos(a)*.18,.50+Math.sin(a)*.13, i%6===0 ? 1.35 : .78));
+    }
+    return p;
+  }
+
+  function sceneAwards(){
+    const p=[];
+    for(let i=0;i<COUNT;i++){
+      const u=i/(COUNT-1);
+      const x=.10+u*.80;
+      const y=.62 - .22*u + .065*Math.sin(u*Math.PI*4.2);
+      p.push(point(x,y, i%8===0 ? 1.5 : .7));
+    }
+    return p;
+  }
+
+  function sceneHobbies(){
+    const p=[];
+    // A waveform transitions into a media orbit: music, gaming and movies.
+    for(let i=0;i<24;i++){
+      const u=i/23;
+      const x=.14+u*.72;
+      const y=.50 + Math.sin(u*Math.PI*4.0)*(.08 + .035*Math.sin(u*Math.PI));
+      p.push(point(x,y, i%6===0 ? 1.35 : .8));
+    }
+    for(let i=0;i<24;i++){
+      const a=(i/24)*Math.PI*2;
+      const r=.16 + (i%4)*.008;
+      p.push(point(.58+Math.cos(a)*r,.50+Math.sin(a)*r*.72, i%5===0 ? 1.3 : .75));
+    }
+    return p;
+  }
+
+  function sceneContact(){
+    const p=[];
+    // globe ring, same points form an orbital network
+    for(let i=0;i<COUNT;i++){
+      const a=(i/COUNT)*Math.PI*2;
+      const wobble=(i%3)*.012;
+      p.push(point(.58+Math.cos(a)*(.28-wobble),.53+Math.sin(a)*(.28-wobble)*.67, .85+(i%7===0?.5:0)));
+    }
+    return p;
+  }
+
+  const SCENES=[sceneHome(),sceneAbout(),sceneResearch(),sceneTeaching(),scenePublications(),sceneService(),sceneAwards(),sceneHobbies(),sceneContact()];
+
+  // edges are scene-specific, but points persist and morph between configurations
+  function chainEdges(start,end){ const e=[]; for(let i=start;i<end;i++) e.push([i,i+1]); return e; }
+  const EDGES=[
+    [...chainEdges(0,22),...chainEdges(24,46),[11,36],[12,35],[23,24]],
+    [...chainEdges(0,22),...chainEdges(24,46),[4,27],[10,31],[16,36],[21,43]],
+    Array.from({length:72},(_,i)=>[(i*7)%COUNT,(i*13+5)%COUNT]),
+    [...chainEdges(0,14),[15,0],...Array.from({length:24},(_,i)=>[16+i,16+((i+8)%32)])],
+    [...chainEdges(0,22),...chainEdges(24,46),[0,24],[5,29],[11,35],[18,42],[23,47]],
+    [...chainEdges(0,22),[23,0],...chainEdges(24,46),[47,24],[3,30],[8,35],[13,40],[18,45]],
+    [...chainEdges(0,46),...Array.from({length:6},(_,i)=>[i*8,Math.min(47,i*8+8)])],
+    [...chainEdges(0,22),...chainEdges(24,46),[0,24],[6,30],[12,36],[18,42],[23,47]],
+    [...chainEdges(0,46),[47,0],...Array.from({length:18},(_,i)=>[(i*5)%COUNT,(i*11+9)%COUNT])]
+  ];
+
+  let dpr=1,W=0,H=0;
+  let scrollProgress=0, targetProgress=0;
+  let mx=.5,my=.5,targetMx=.5,targetMy=.5;
+
+  function resize(){
+    dpr=Math.min(devicePixelRatio||1,2);
+    W=innerWidth; H=innerHeight;
+    canvas.width=Math.round(W*dpr); canvas.height=Math.round(H*dpr);
+    canvas.style.width=W+'px'; canvas.style.height=H+'px';
+    ctx.setTransform(dpr,0,0,dpr,0,0);
+  }
+
+  function getProgress(){
+    // Map scroll directly between section starts so each section lands on an exact morph state.
+    if(sections.length < 2) return 0;
+    const y = scrollY + 1;
+    let idx = 0;
+    for(let n=0;n<sections.length-1;n++){
+      if(y >= sections[n+1].offsetTop) idx = n+1;
+      else break;
+    }
+    if(idx >= sections.length-1) return 1;
+    const a = sections[idx].offsetTop;
+    const b = sections[idx+1].offsetTop;
+    const local = b>a ? clamp((y-a)/(b-a),0,1) : 0;
+    return (idx + local)/(sections.length-1);
+  }
+
+  function updateScroll(){
+    targetProgress=getProgress();
+    header.classList.toggle('scrolled',scrollY>25);
+  }
+
+  function drawGrid(alpha, offsetX, offsetY){
+    if(alpha<.01)return;
+    ctx.save(); ctx.globalAlpha=alpha; ctx.strokeStyle='rgba(122,199,211,.18)'; ctx.lineWidth=1;
+    const gap=56;
+    for(let x=(offsetX%gap)-gap;x<W+gap;x+=gap){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+    for(let y=(offsetY%gap)-gap;y<H+gap;y+=gap){ctx.beginPath();ctx.moveTo(0,y);ctx.lineTo(W,y);ctx.stroke();}
+    ctx.restore();
+  }
+
+  function drawDesk(alpha){
+    if(alpha<.01)return;
+    ctx.save();ctx.globalAlpha=alpha;
+    const y=H*.77;
+    const g=ctx.createLinearGradient(0,y,0,H);g.addColorStop(0,'rgba(85,58,37,.28)');g.addColorStop(1,'rgba(10,8,7,.55)');ctx.fillStyle=g;ctx.fillRect(0,y,W,H-y);
+    ctx.strokeStyle='rgba(219,178,111,.15)';ctx.lineWidth=1;
+    for(let i=0;i<7;i++){ctx.beginPath();ctx.moveTo(0,y+i*29);ctx.bezierCurveTo(W*.25,y+i*28-6,W*.68,y+i*32+6,W,y+i*29);ctx.stroke();}
+    ctx.restore();
+  }
+
+  function drawBoard(alpha){
+    if(alpha<.01)return;
+    ctx.save();ctx.globalAlpha=alpha;
+    const x=W*.25,y=H*.20,w=W*.5,h=H*.36;
+    ctx.fillStyle='rgba(21,39,36,.20)';ctx.strokeStyle='rgba(214,174,106,.20)';ctx.lineWidth=1.4;
+    roundRect(ctx,x,y,w,h,12);ctx.fill();ctx.stroke();
+    ctx.fillStyle='rgba(225,221,192,.08)'; ctx.font=`${Math.max(12,W*.012)}px Georgia`;
+    ctx.fillText('r = α + β₁x₁ + β₂x₂ + ε',x+w*.14,y+h*.34);
+    ctx.fillText('E[R]  ·  σ²  ·  β',x+w*.52,y+h*.62);
+    ctx.restore();
+  }
+
+  function drawPages(alpha){
+    if(alpha<.01)return;
+    ctx.save();ctx.globalAlpha=alpha;
+    const cx=W*.52, cy=H*.50;
+    ctx.strokeStyle='rgba(230,199,145,.14)';ctx.lineWidth=1;
+    for(let k=0;k<7;k++){
+      ctx.beginPath();
+      ctx.moveTo(cx,cy);
+      ctx.quadraticCurveTo(cx-W*(.12+k*.012),cy-H*(.20-k*.006),cx-W*(.28+k*.01),cy-H*(.10-k*.01));
+      ctx.stroke();
+      ctx.beginPath();
+      ctx.moveTo(cx,cy);
+      ctx.quadraticCurveTo(cx+W*(.12+k*.012),cy-H*(.20-k*.006),cx+W*(.28+k*.01),cy-H*(.10-k*.01));
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawGlobe(alpha){
+    if(alpha<.01)return;
+    ctx.save();ctx.globalAlpha=alpha;
+    const cx=W*.58,cy=H*.53,rx=Math.min(W*.30,420),ry=rx*.62;
+    ctx.strokeStyle='rgba(91,178,200,.13)';ctx.lineWidth=1;
+    ctx.beginPath();ctx.ellipse(cx,cy,rx,ry,0,0,Math.PI*2);ctx.stroke();
+    for(let i=-2;i<=2;i++){ctx.beginPath();ctx.ellipse(cx,cy,rx*Math.cos(i*.22),ry,0,0,Math.PI*2);ctx.stroke();}
+    for(let i=-2;i<=2;i++){ctx.beginPath();ctx.ellipse(cx,cy,rx,ry*Math.cos(i*.24),0,0,Math.PI*2);ctx.stroke();}
+    ctx.restore();
+  }
+
+  function roundRect(c,x,y,w,h,r){
+    const rr=Math.min(r,w/2,h/2);
+    c.beginPath();c.moveTo(x+rr,y);c.arcTo(x+w,y,x+w,y+h,rr);c.arcTo(x+w,y+h,x,y+h,rr);c.arcTo(x,y+h,x,y,rr);c.arcTo(x,y,x+w,y,rr);c.closePath();
+  }
+
+  function getSegment(p){
+    const exact=p*(SCENES.length-1);
+    const i=Math.min(SCENES.length-2,Math.floor(exact));
+    return {i,t:exact-i};
+  }
+
+  function interpPoints(i,t){
+    const a=SCENES[i], b=SCENES[i+1], e=ease(t);
+    return a.map((p,k)=>({x:lerp(p.x,b[k].x,e),y:lerp(p.y,b[k].y,e),s:lerp(p.s,b[k].s,e)}));
+  }
+
+  function drawEdges(points, edges, alpha, color){
+    if(alpha<=.005)return;
+    ctx.save();ctx.strokeStyle=color;ctx.globalAlpha=alpha;ctx.lineWidth=1;
+    for(const [a,b] of edges){
+      const A=points[a],B=points[b];if(!A||!B)continue;
+      ctx.beginPath();ctx.moveTo(A.x*W,A.y*H);ctx.lineTo(B.x*W,B.y*H);ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function drawRibbon(points, i, t){
+    // A persistent luminous thread that physically changes shape with the scene.
+    const ids=[0,4,8,12,16,20,23,27,31,35,39,43,47];
+    ctx.save();
+    ctx.lineCap='round';ctx.lineJoin='round';
+    const path=new Path2D();
+    const first=points[ids[0]];path.moveTo(first.x*W,first.y*H);
+    for(let n=1;n<ids.length-1;n++){
+      const p=points[ids[n]], q=points[ids[n+1]];
+      path.quadraticCurveTo(p.x*W,p.y*H,(p.x+q.x)*.5*W,(p.y+q.y)*.5*H);
+    }
+    const last=points[ids.at(-1)];path.lineTo(last.x*W,last.y*H);
+    ctx.strokeStyle='rgba(224,179,103,.10)';ctx.lineWidth=12;ctx.shadowBlur=26;ctx.shadowColor='rgba(216,173,103,.45)';ctx.stroke(path);
+    ctx.strokeStyle='rgba(236,199,133,.75)';ctx.lineWidth=1.4;ctx.shadowBlur=12;ctx.stroke(path);
+    ctx.restore();
+  }
+
+  function drawNodes(points,i,t){
+    const next=(i+1);
+    const colA=palettes[i][2], colB=palettes[next][2];
+    const c=mixColor(colA,colB,ease(t));
+    ctx.save();
+    for(let k=0;k<points.length;k++){
+      const p=points[k];
+      const x=p.x*W + (mx-.5)*(6+(k%5)*2);
+      const y=p.y*H + (my-.5)*(4+(k%7));
+      const r=(1.45 + p.s*1.65) * (W<700?.82:1);
+      ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
+      ctx.fillStyle=c;ctx.globalAlpha=.38+(k%7===0?.4:.08);ctx.shadowBlur=15;ctx.shadowColor=c;ctx.fill();
+      if(k%8===0){ctx.beginPath();ctx.arc(x,y,r*3.5,0,Math.PI*2);ctx.strokeStyle=c;ctx.globalAlpha=.09;ctx.lineWidth=1;ctx.stroke();}
+    }
+    ctx.restore();
+  }
+
+  function render(){
+    scrollProgress += (targetProgress-scrollProgress)*(reduceMotion?1:.075);
+    mx += (targetMx-mx)*.05; my += (targetMy-my)*.05;
+    const {i,t}=getSegment(scrollProgress);
+    const te=ease(t);
+    const pA=palettes[i],pB=palettes[i+1];
+
+    // atmospheric background
+    const bg=ctx.createRadialGradient(W*(.56+(mx-.5)*.06),H*(.46+(my-.5)*.04),20,W*.55,H*.48,Math.max(W,H)*.78);
+    bg.addColorStop(0,mixColor(pA[1],pB[1],te));
+    bg.addColorStop(.52,mixColor(pA[0],pB[0],te));
+    bg.addColorStop(1,'#020608');
+    ctx.fillStyle=bg;ctx.globalAlpha=1;ctx.fillRect(0,0,W,H);
+
+    // scene-specific ambient forms crossfade while the actual point geometry morphs.
+    const curAlpha=1-smooth(clamp(t*1.55,0,1));
+    const nextAlpha=smooth(clamp((t-.35)*1.55,0,1));
+    const sceneEffects=[drawDesk,()=>{},()=>drawGrid(.42,scrollProgress*130,scrollProgress*55),drawBoard,drawPages,()=>drawGrid(.18,scrollProgress*70,scrollProgress*25),()=>{},()=>drawGrid(.20,scrollProgress*80,scrollProgress*35),drawGlobe];
+    sceneEffects[i]?.(curAlpha);
+    sceneEffects[i+1]?.(nextAlpha);
+
+    // large light source migrates across scenes
+    const lx=lerp(.68,.42,scrollProgress)*W + (mx-.5)*20;
+    const ly=lerp(.20,.30,scrollProgress)*H;
+    const light=ctx.createRadialGradient(lx,ly,0,lx,ly,Math.min(W,H)*.44);
+    light.addColorStop(0,'rgba(236,186,104,.15)');light.addColorStop(.35,'rgba(236,186,104,.045)');light.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.fillStyle=light;ctx.fillRect(0,0,W,H);
+
+    const points=interpPoints(i,t);
+    drawEdges(points,EDGES[i],(1-te)*.34,'rgba(175,216,220,.55)');
+    drawEdges(points,EDGES[i+1],te*.34,'rgba(216,173,103,.55)');
+    drawRibbon(points,i,t);
+    drawNodes(points,i,t);
+
+    // depth haze
+    const haze=ctx.createLinearGradient(0,0,0,H);haze.addColorStop(0,'rgba(0,0,0,.02)');haze.addColorStop(.78,'rgba(0,0,0,.05)');haze.addColorStop(1,'rgba(0,0,0,.38)');ctx.fillStyle=haze;ctx.globalAlpha=1;ctx.fillRect(0,0,W,H);
+
+    const sceneIdx=Math.min(SCENES.length-1,Math.round(scrollProgress*(SCENES.length-1)));
+    meter.style.height=`${scrollProgress*100}%`;
+    sceneNumber.textContent=String(sceneIdx+1).padStart(2,'0');
+    sceneName.textContent=labels[sceneIdx];
+    navLinks.forEach((a,k)=>a.classList.toggle('active',k===sceneIdx));
+
+    requestAnimationFrame(render);
+  }
+
+  function revealObserver(){
+    const io=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible')}),{threshold:.28});
+    document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  }
+
+  addEventListener('resize',resize,{passive:true});
+  addEventListener('scroll',updateScroll,{passive:true});
+  addEventListener('pointermove',e=>{targetMx=e.clientX/innerWidth;targetMy=e.clientY/innerHeight},{passive:true});
+  menuToggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(open));});
+  navLinks.forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');}));
+
+  // test/preview helper: index.html?scene=research
+  const previewScene=new URLSearchParams(location.search).get('scene');
+  if(previewScene){
+    addEventListener('load',()=>{const el=document.getElementById(previewScene);if(el)setTimeout(()=>el.scrollIntoView(),60);});
+  }
+
+  resize(); updateScroll(); revealObserver(); requestAnimationFrame(render);
+})();
+
+</script>
+</body>
+</html>
