@@ -4,8 +4,51 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#071017" />
-  <meta name="description" content="Personal academic website of Md Rezwan Hossain Ratul, Assistant Professor of Finance at Francis Marion University." />
+  <meta name="color-scheme" content="dark" />
+  <meta name="description" content="Personal academic website of Md Rezwan Hossain Ratul, Assistant Professor of Finance at Francis Marion University. Research interests include corporate finance, behavioral finance, and corruption." />
+  <meta name="author" content="Md Rezwan Hossain Ratul" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://rezwanratul1492.github.io/FinanceWebsite/" />
+
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Md Rezwan Hossain Ratul" />
+  <meta property="og:title" content="Md Rezwan Hossain Ratul | Assistant Professor of Finance" />
+  <meta property="og:description" content="Educator, researcher, gamer, and musician. Assistant Professor of Finance at Francis Marion University." />
+  <meta property="og:url" content="https://rezwanratul1492.github.io/FinanceWebsite/" />
+  <meta property="og:image" content="https://rezwanratul1492.github.io/FinanceWebsite/assets/social-preview.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Md Rezwan Hossain Ratul — Assistant Professor of Finance at Francis Marion University" />
+
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Md Rezwan Hossain Ratul | Assistant Professor of Finance" />
+  <meta name="twitter:description" content="Research, teaching, academic service, awards, and interests." />
+  <meta name="twitter:image" content="https://rezwanratul1492.github.io/FinanceWebsite/assets/social-preview.png" />
+
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="manifest" href="site.webmanifest" />
   <title>Md Rezwan Hossain Ratul | Assistant Professor of Finance</title>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Person",
+    "name": "Md Rezwan Hossain Ratul",
+    "alternateName": "Md Rezwan H Ratul",
+    "jobTitle": "Assistant Professor of Finance",
+    "worksFor": {
+      "@type": "CollegeOrUniversity",
+      "name": "Francis Marion University"
+    },
+    "url": "https://rezwanratul1492.github.io/FinanceWebsite/",
+    "sameAs": [
+      "https://www.linkedin.com/in/mdrezwanhratul/",
+      "https://scholar.google.com/citations?hl=en&authuser=1&user=27se0i0AAAAJ"
+    ],
+    "knowsAbout": ["Corporate Finance", "Behavioral Finance", "Corruption"]
+  }
+  </script>
   <style>
 :root {
   --bg: #071017;
@@ -318,9 +361,107 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
 .hobby-grid strong { font-family:var(--font-serif); font-size:23px; font-weight:500; color:#f1e7d5; }
 @media (max-width:560px) { .hobby-grid { grid-template-columns:1fr 1fr; } .hobby-grid article { min-height:92px; } .hobby-grid strong { font-size:19px; } }
 
+
+/* Production polish */
+.skip-link {
+  position: fixed;
+  left: 18px;
+  top: 14px;
+  z-index: 100;
+  transform: translateY(-150%);
+  padding: 10px 14px;
+  border-radius: 999px;
+  background: #ead0a0;
+  color: #071017;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 700;
+  transition: transform .2s ease;
+}
+.skip-link:focus { transform: none; }
+
+.site-footer {
+  position: relative;
+  z-index: 5;
+  border-top: 1px solid rgba(255,255,255,.10);
+  background: rgba(2,7,10,.94);
+  padding: 34px 8vw 38px;
+}
+.footer-inner {
+  width: min(1240px, 100%);
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  align-items: center;
+}
+.footer-identity strong {
+  display: block;
+  font-family: var(--font-serif);
+  font-weight: 500;
+  font-size: 18px;
+  color: #f0dfbf;
+}
+.footer-identity p {
+  margin: 6px 0 0;
+  color: #7f8b90;
+  font-size: 11px;
+  line-height: 1.5;
+}
+.footer-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  gap: 9px 16px;
+}
+.footer-actions a {
+  color: #aab4b8;
+  text-decoration: none;
+  text-transform: uppercase;
+  font-size: 10px;
+  letter-spacing: .12em;
+}
+.footer-actions a:hover { color: #efd19b; }
+.footer-bottom {
+  width: min(1240px, 100%);
+  margin: 22px auto 0;
+  padding-top: 18px;
+  border-top: 1px solid rgba(255,255,255,.07);
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  color: #5f6c71;
+  font-size: 9px;
+  letter-spacing: .05em;
+}
+
+@media (max-width: 1100px) {
+  .site-nav { gap: 18px; }
+  .site-nav a { font-size: 10px; letter-spacing: .11em; }
+}
+@media (max-width: 960px) {
+  .footer-inner { grid-template-columns: 1fr; }
+  .footer-actions { justify-content: flex-start; }
+  .footer-bottom { flex-direction: column; }
+  .content-card.wide-card { width: min(680px,100%); }
+}
+@media (max-width: 560px) {
+  .site-header { padding: 14px 16px; }
+  .brand-mark { width: 34px; height: 34px; }
+  .brand-copy strong { font-size: 14px; }
+  .story-section { padding-left: 16px; padding-right: 16px; }
+  .content-card { padding: 20px; }
+  .content-card.wide-card { padding: 20px; }
+  .scene-meter { display: none; }
+  .site-footer { padding: 30px 18px 32px; }
+  .footer-actions { gap: 12px 18px; }
+  .professional-links { max-width: 340px; }
+}
+
 </style>
 </head>
 <body>
+  <a class="skip-link" href="#story">Skip to content</a>
   <canvas id="morph-canvas" aria-hidden="true"></canvas>
   <div class="noise" aria-hidden="true"></div>
   <div class="vignette" aria-hidden="true"></div>
@@ -575,6 +716,29 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
       </div>
     </section>
   </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-identity">
+        <strong>Md Rezwan H Ratul</strong>
+        <p>Assistant Professor of Finance · Francis Marion University</p>
+      </div>
+      <div class="footer-actions" aria-label="Footer links">
+        <a href="#home">Home</a>
+        <a href="#research">Research</a>
+        <a href="#teaching">Teaching</a>
+        <a href="https://www.linkedin.com/in/mdrezwanhratul/" target="_blank" rel="noopener">LinkedIn ↗</a>
+        <a href="https://scholar.google.com/citations?hl=en&amp;authuser=1&amp;user=27se0i0AAAAJ" target="_blank" rel="noopener">Google Scholar ↗</a>
+        <a href="mailto:dr.rezwanfmu@gmail.com">Email</a>
+        <!-- CV READY: upload a file named cv.pdf to the repository root, then remove hidden from the next link. -->
+        <a href="cv.pdf" download hidden>Download CV</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© <span id="copyright-year">2026</span> Md Rezwan Hossain Ratul</span>
+      <span>Designed as a scroll-driven academic portfolio.</span>
+    </div>
+  </footer>
 
   <script>
 (() => {
@@ -987,6 +1151,9 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
   if(previewScene){
     addEventListener('load',()=>{const el=document.getElementById(previewScene);if(el)setTimeout(()=>el.scrollIntoView(),60);});
   }
+
+  const copyrightYear = document.getElementById('copyright-year');
+  if(copyrightYear) copyrightYear.textContent = new Date().getFullYear();
 
   resize(); updateScroll(); revealObserver(); requestAnimationFrame(render);
 })();

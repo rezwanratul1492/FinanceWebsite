@@ -1,0 +1,12 @@
+{
+  "name": "Md Rezwan Hossain Ratul | Academic Portfolio",
+  "short_name": "Rezwan Ratul",
+  "start_url": "/FinanceWebsite/",
+  "scope": "/FinanceWebsite/",
+  "display": "standalone",
+  "background_color": "#071017",
+  "theme_color": "#071017",
+  "icons": [
+    {"src":"assets/apple-touch-icon.png","sizes":"180x180","type":"image/png"}
+  ]
+}

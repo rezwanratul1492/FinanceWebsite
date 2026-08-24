@@ -1,0 +1,17 @@
+QUICK EDIT GUIDE
+================
+
+Small text edit on GitHub:
+1. Open FinanceWebsite/index.html
+2. Click the pencil icon
+3. Ctrl+F the exact text you want to change
+4. Make the edit
+5. Click Commit changes
+
+Add your CV later:
+- Upload cv.pdf to the repository root
+- Search index.html for: CV READY
+- Remove the word hidden from the next link
+- Commit
+
+For structural/design changes, keep a backup first or ask for a new edited index.html.
