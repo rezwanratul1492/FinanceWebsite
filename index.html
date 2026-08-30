@@ -458,6 +458,148 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
   .professional-links { max-width: 340px; }
 }
 
+
+
+/* ===== V12 COLOR + PROFILE + GALLERY DRAFT ===== */
+.hero-heading-row {
+  display:flex;
+  align-items:center;
+  gap:clamp(24px,4vw,58px);
+  width:min(980px,100%);
+  max-width:none!important;
+}
+.hero-heading-row h1 {
+  flex:1 1 auto;
+  min-width:0;
+  max-width:760px!important;
+}
+.hero-profile {
+  position:relative;
+  z-index:5;
+  flex:0 0 clamp(185px,18vw,255px);
+  width:clamp(185px,18vw,255px);
+  aspect-ratio:1/1.12;
+  border-radius:28px;
+  padding:6px;
+  background:linear-gradient(145deg, rgba(92,215,255,.95), rgba(177,93,255,.88) 46%, rgba(255,167,84,.92));
+  box-shadow:0 22px 80px rgba(23,126,255,.20), 0 18px 80px rgba(204,69,255,.14);
+}
+.hero-profile-inner {
+  width:100%; height:100%; border-radius:22px; overflow:hidden;
+  background:linear-gradient(145deg, rgba(12,25,42,.96), rgba(27,20,47,.96));
+  border:1px solid rgba(255,255,255,.12);
+  display:grid; place-items:center; position:relative;
+}
+.hero-profile-inner::before {
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(circle at 30% 20%, rgba(86,218,255,.18), transparent 38%),
+             radial-gradient(circle at 80% 82%, rgba(234,96,255,.16), transparent 40%);
+}
+.profile-placeholder { position:relative; text-align:center; padding:16px; }
+.profile-placeholder strong { display:block; font-family:var(--font-serif); font-size:46px; font-weight:500; color:#f2d6a0; }
+.profile-placeholder span { display:block; margin-top:8px; color:#9ba8b4; font-size:9px; letter-spacing:.15em; text-transform:uppercase; }
+.hero-copy { position:relative; }
+.hero-copy > .eyebrow, .hero-copy > .hero-tagline, .hero-copy > .lede, .hero-copy > .hero-actions, .hero-copy > .professional-links { max-width:690px!important; }
+
+.gallery-card { width:min(930px,100%); }
+.gallery-head { display:flex; align-items:flex-start; justify-content:space-between; gap:20px; }
+.gallery-head-copy { min-width:0; }
+.gallery-admin-button { flex:0 0 auto; display:inline-flex; align-items:center; gap:8px; min-height:38px; padding:0 14px; border:1px solid rgba(255,255,255,.14); border-radius:999px; background:rgba(255,255,255,.035); color:#aab5bc; font:600 10px/1 var(--font-sans); letter-spacing:.12em; text-transform:uppercase; cursor:pointer; backdrop-filter:blur(12px); }
+.gallery-admin-button:hover { color:#fff; border-color:rgba(117,210,255,.45); }
+.gallery-admin-button svg { width:13px; height:13px; }
+.gallery-stream-shell { position:relative; margin-top:24px; }
+.gallery-stream { display:flex; gap:13px; overflow-x:auto; overscroll-behavior-inline:contain; scroll-snap-type:x mandatory; scroll-behavior:smooth; padding:2px 3px 13px; scrollbar-width:none; -ms-overflow-style:none; }
+.gallery-stream::-webkit-scrollbar { display:none; }
+.gallery-item { position:relative; flex:0 0 clamp(245px,34vw,355px); aspect-ratio:4/3; scroll-snap-align:start; border-radius:18px; overflow:hidden; border:1px solid rgba(255,255,255,.12); background:#101722; box-shadow:0 16px 42px rgba(0,0,0,.19); }
+.gallery-item img { width:100%; height:100%; object-fit:cover; display:block; transition:transform .45s ease; }
+.gallery-item:hover img { transform:scale(1.035); }
+.gallery-item::after { content:""; position:absolute; inset:0; background:linear-gradient(0deg, rgba(0,0,0,.58), transparent 62%); pointer-events:none; }
+.gallery-item span { position:absolute; z-index:2; left:15px; bottom:13px; color:#eef2f5; font-size:10px; letter-spacing:.11em; text-transform:uppercase; }
+.gallery-item:nth-child(1){background:linear-gradient(135deg,#18355f,#23a6d5,#89d7df)}
+.gallery-item:nth-child(2){background:linear-gradient(135deg,#552b76,#c55cff,#ff7f8e)}
+.gallery-item:nth-child(3){background:linear-gradient(135deg,#263f52,#50b891,#bce77d)}
+.gallery-item:nth-child(4){background:linear-gradient(135deg,#5c2d33,#ff8b4d,#ffd86f)}
+.gallery-item:nth-child(5){background:linear-gradient(135deg,#172842,#4466bb,#8d73e6)}
+.gallery-item:nth-child(6){background:linear-gradient(135deg,#083c4a,#14a7a2,#78e6d0)}
+.gallery-arrow { position:absolute; z-index:5; top:50%; transform:translateY(-50%); width:44px; height:44px; display:grid; place-items:center; border:1px solid rgba(255,255,255,.18); border-radius:50%; background:rgba(5,12,18,.82); color:#fff; cursor:pointer; backdrop-filter:blur(14px); box-shadow:0 12px 35px rgba(0,0,0,.24); transition:transform .2s ease, background .2s ease, opacity .2s ease; }
+.gallery-arrow:hover { transform:translateY(-50%) scale(1.06); background:rgba(18,35,52,.94); }
+.gallery-arrow.prev { left:-20px; }
+.gallery-arrow.next { right:-20px; }
+.gallery-arrow:disabled { opacity:.28; cursor:default; }
+.gallery-note { margin-top:12px!important; color:#8f9aa3!important; font-size:11px!important; }
+.gallery-counter { color:#8f9aa3; font-size:10px; letter-spacing:.12em; text-transform:uppercase; margin-top:3px; }
+
+.admin-dialog { width:min(420px,calc(100vw - 30px)); border:1px solid rgba(255,255,255,.14); border-radius:22px; padding:0; background:#09131d; color:var(--text); box-shadow:0 40px 120px rgba(0,0,0,.65); }
+.admin-dialog::backdrop { background:rgba(1,5,9,.72); backdrop-filter:blur(8px); }
+.admin-dialog-inner { padding:24px; }
+.admin-dialog-head { display:flex; justify-content:space-between; align-items:center; gap:15px; margin-bottom:18px; }
+.admin-dialog-head strong { font-family:var(--font-serif); font-size:24px; font-weight:500; }
+.admin-close { width:34px; height:34px; border-radius:50%; border:1px solid rgba(255,255,255,.12); background:rgba(255,255,255,.035); color:#fff; cursor:pointer; }
+.admin-dialog p { color:#97a4ac; font-size:12px; line-height:1.6; }
+.admin-field { display:grid; gap:7px; margin-top:13px; }
+.admin-field span { color:#aeb7bc; font-size:10px; letter-spacing:.11em; text-transform:uppercase; }
+.admin-field input { width:100%; border:1px solid rgba(255,255,255,.13); border-radius:12px; background:rgba(255,255,255,.04); color:#fff; padding:12px 13px; outline:none; }
+.admin-field input:focus { border-color:rgba(89,199,255,.55); }
+.admin-submit { margin-top:18px; width:100%; min-height:43px; border:0; border-radius:999px; background:linear-gradient(90deg,#58bfff,#a967ff,#ee79ba); color:#071017; font-weight:700; cursor:pointer; }
+.admin-status { min-height:18px; margin:10px 0 0!important; color:#c6a9ff!important; }
+
+@media (max-width:1100px){
+  .hero-heading-row { width:min(860px,100%); gap:28px; }
+  .hero-profile { flex-basis:195px; width:195px; }
+  .hero-copy > .eyebrow, .hero-copy > .hero-tagline, .hero-copy > .lede, .hero-copy > .hero-actions, .hero-copy > .professional-links { max-width:610px!important; }
+}
+@media (max-width:960px){
+  .hero-heading-row { align-items:center; gap:18px; }
+  .hero-heading-row h1 { font-size:clamp(48px,12vw,74px); }
+  .hero-profile { flex-basis:155px; width:155px; border-radius:24px; }
+  .hero-profile-inner { border-radius:17px; }
+  .profile-placeholder strong{font-size:32px}
+  .profile-placeholder span{font-size:8px; letter-spacing:.10em}
+  .gallery-item{flex-basis:clamp(230px,52vw,330px)}
+  .gallery-arrow.prev{left:-12px}.gallery-arrow.next{right:-12px}
+}
+@media (max-width:560px){
+  .hero-heading-row { gap:12px; align-items:flex-start; }
+  .hero-heading-row h1 { font-size:clamp(41px,12.2vw,58px); }
+  .hero-profile { flex-basis:112px; width:112px; padding:4px; border-radius:18px; margin-top:4px; }
+  .hero-profile-inner { border-radius:14px; }
+  .profile-placeholder { padding:8px; }
+  .profile-placeholder strong{font-size:25px}
+  .profile-placeholder span{display:none}
+  .gallery-head{gap:10px}.gallery-admin-button{padding:0 11px;font-size:9px}
+  .gallery-item{flex-basis:82vw;max-width:320px;border-radius:14px}
+  .gallery-arrow{width:38px;height:38px}.gallery-arrow.prev{left:-6px}.gallery-arrow.next{right:-6px}
+}
+
+
+
+/* Experience section */
+.experience-card { width:min(760px,100%); }
+.experience-list { display:grid; gap:10px; margin-top:24px; }
+.experience-list article { display:grid; grid-template-columns:118px 1fr; gap:18px; align-items:start; padding:15px 0; border-top:1px solid rgba(255,255,255,.11); }
+.experience-list article:first-child { border-top-color:rgba(94,224,255,.30); }
+.experience-period { color:#6ce7ff; font-size:9px; font-weight:700; letter-spacing:.13em; text-transform:uppercase; line-height:1.45; padding-top:3px; }
+.experience-list strong { display:block; color:#f2d6a4; font-family:var(--font-serif); font-size:18px; font-weight:500; line-height:1.25; }
+.experience-list small { display:block; margin-top:5px; color:#95a5ad; font-size:11px; line-height:1.5; }
+
+/* Research section with working papers */
+.research-card { width:min(780px,100%); }
+.research-papers { margin-top:26px; }
+.research-papers-head { display:flex; align-items:end; justify-content:space-between; gap:16px; margin-bottom:9px; }
+.research-papers-head strong { color:#f0d29c; font-family:var(--font-serif); font-size:20px; font-weight:500; }
+.research-papers-head span { color:#7e9098; font-size:9px; letter-spacing:.13em; text-transform:uppercase; }
+.research-paper-list { border-top:1px solid rgba(255,255,255,.12); }
+.research-paper-list article { display:grid; grid-template-columns:28px 1fr auto; gap:11px; align-items:center; padding:12px 0; border-bottom:1px solid rgba(255,255,255,.09); }
+.research-paper-list article > span { color:#66e1ed; font-family:var(--font-serif); font-size:12px; }
+.research-paper-list strong { color:#dce5e8; font-size:12px; font-weight:500; line-height:1.35; }
+.research-paper-list small { color:#829198; font-size:9px; white-space:nowrap; }
+.research-paper-list .under-review small { color:#ffd176; }
+@media (max-width: 700px) {
+  .experience-list article { grid-template-columns:1fr; gap:6px; }
+  .research-paper-list article { grid-template-columns:24px 1fr; }
+  .research-paper-list small { grid-column:2; white-space:normal; }
+}
+
 </style>
 </head>
 <body>
@@ -480,13 +622,14 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
     <nav id="site-nav" class="site-nav" aria-label="Primary navigation">
       <a href="#home" data-index="0">Home</a>
       <a href="#about" data-index="1">About</a>
-      <a href="#research" data-index="2">Research</a>
-      <a href="#teaching" data-index="3">Teaching</a>
-      <a href="#publications" data-index="4">Papers</a>
+      <a href="#experience" data-index="2">Experience</a>
+      <a href="#research" data-index="3">Research</a>
+      <a href="#teaching" data-index="4">Teaching</a>
       <a href="#service" data-index="5">Service</a>
       <a href="#awards" data-index="6">Awards</a>
       <a href="#hobbies" data-index="7">Hobbies</a>
-      <a href="#contact" data-index="8">Contact</a>
+      <a href="#gallery" data-index="8">Gallery</a>
+      <a href="#contact" data-index="9">Contact</a>
     </nav>
   </header>
 
@@ -499,13 +642,22 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
     <section class="story-section hero" id="home" data-scene="0">
       <div class="section-inner hero-copy">
         <p class="eyebrow reveal" id="home-eyebrow">ASSISTANT PROFESSOR OF FINANCE · FRANCIS MARION UNIVERSITY</p>
-        <h1 class="reveal" id="home-title">Md Rezwan Hossain<br><em>Ratul</em></h1>
+        <div class="hero-heading-row reveal">
+          <h1 id="home-title">Md Rezwan Hossain<br><em>Ratul</em></h1>
+          <div class="hero-profile" aria-label="Profile photo placeholder">
+            <div class="hero-profile-inner">
+              <div class="profile-placeholder"><strong>MR</strong><span>Your profile photo</span></div>
+            </div>
+          </div>
+        </div>
         <p class="hero-tagline reveal">Educator · Researcher · Gamer · Musician</p>
         <p class="lede reveal">Hello everyone. This is Rezwan. Welcome to my website. I aspire to become a Full Professor of Finance one day, driven by a passion for teaching alongside conducting quality research. Beyond academia, I love watching movies, playing games, and engaging in music.</p>
         <div class="hero-actions reveal">
-          <a class="button primary" href="#research">Research</a>
+          <a class="button primary" href="#experience">Experience</a>
+          <a class="button ghost" href="#research">Research</a>
           <a class="button ghost" href="#teaching">Teaching</a>
           <a class="button ghost" href="#hobbies">Hobbies</a>
+          <a class="button ghost" href="#gallery">Gallery</a>
           <a class="button ghost" href="#contact">Contact Me</a>
         </div>
         <div class="professional-links reveal" aria-label="Professional profiles">
@@ -552,28 +704,63 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
       </div>
     </section>
 
-    <section class="story-section" id="research" data-scene="2">
+
+    <section class="story-section" id="experience" data-scene="2">
       <div class="section-inner align-right">
-        <div class="content-card reveal wide-card">
-          <p class="eyebrow">02 · RESEARCH</p>
+        <div class="content-card reveal experience-card">
+          <p class="eyebrow">02 · EXPERIENCE</p>
+          <h2>Teaching finance across institutions and classrooms.</h2>
+          <p>My academic experience has developed across faculty and instructional roles in the United States and Bangladesh, with a continuing focus on finance education.</p>
+          <div class="experience-list" aria-label="Academic experience">
+            <article>
+              <span class="experience-period">Fall 2026 → Present</span>
+              <div><strong>Assistant Professor — Finance (Tenure-Track)</strong><small>Francis Marion University · South Carolina</small></div>
+            </article>
+            <article>
+              <span class="experience-period">Spring 2025 → Summer I 2026</span>
+              <div><strong>Graduate Associate Instructor — Finance</strong><small>The University of Texas Rio Grande Valley · Texas</small></div>
+            </article>
+            <article>
+              <span class="experience-period">2019 → 2022</span>
+              <div><strong>Lecturer — Finance</strong><small>Southeast University · Bangladesh</small></div>
+            </article>
+            <article>
+              <span class="experience-period">2018 → 2021</span>
+              <div><strong>Lecturer (Adjunct)</strong><small>North South University · Bangladesh</small></div>
+            </article>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="story-section" id="research" data-scene="3">
+      <div class="section-inner align-left">
+        <div class="content-card reveal research-card">
+          <p class="eyebrow">03 · RESEARCH</p>
           <h2 id="research-heading">Questions about firms, behavior, and the environments around them.</h2>
           <p id="research-body">My research interests are centered on corporate finance, behavioral finance, and corruption. I am interested in understanding how institutional conditions, organizational behavior, social dynamics, and information environments shape corporate decisions and outcomes.</p>
           <div class="tag-list" id="research-topics" aria-label="Research interests">
             <span>Corporate Finance</span><span>Behavioral Finance</span><span>Corruption</span>
           </div>
-          <div class="research-featured" aria-label="Current research highlights">
-            <article><strong>Corruption and Investment Efficiency</strong><small>Under review · Journal of Business Ethics</small></article>
-            <article><strong>Measuring of Corporate Culture Washing</strong><small>Working paper</small></article>
+          <div class="research-papers" aria-label="Research papers and working papers">
+            <div class="research-papers-head"><strong>Current Research &amp; Working Papers</strong><span>Selected projects</span></div>
+            <div class="research-paper-list">
+              <article class="under-review"><span>01</span><strong>Corruption and Investment Efficiency</strong><small>Under review · Journal of Business Ethics</small></article>
+              <article><span>02</span><strong>Measuring of Corporate Culture Washing</strong><small>Working paper</small></article>
+              <article><span>03</span><strong>Does Being Fair To LGBTQ+ Employees Benefit Corporations?</strong><small>Working paper</small></article>
+              <article><span>04</span><strong>Board Reform and Corporate Tax Avoidance: Worldwide Evidence</strong><small>Working paper</small></article>
+              <article><span>05</span><strong>Does Social Media Sentiment Affect Corporate ESG Performance: Evidence from YouTube</strong><small>Working paper</small></article>
+              <article><span>06</span><strong>Do Corporations Misuse Trust: An Empirical Study of Social Capital and Corporate Restatement Fraud</strong><small>Working paper</small></article>
+            </div>
           </div>
-          <a class="text-link" id="research-link" href="#publications">View research papers <span>↗</span></a>
         </div>
       </div>
     </section>
 
-    <section class="story-section" id="teaching" data-scene="3">
+    <section class="story-section" id="teaching" data-scene="4">
       <div class="section-inner align-left">
         <div class="content-card reveal teaching-card">
-          <p class="eyebrow">03 · TEACHING</p>
+          <p class="eyebrow">04 · TEACHING</p>
           <h2 id="teaching-heading">Teaching starts with one question: <em>Why?</em></h2>
           <p id="teaching-body">I believe that understanding why a financial concept works is the foundation for learning how and when to apply it. My goal is to make finance approachable, analytical, and useful—so students leave with reasoning they can carry beyond the classroom.</p>
 
@@ -608,23 +795,6 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
       </div>
     </section>
 
-    <section class="story-section" id="publications" data-scene="4">
-      <div class="section-inner align-right">
-        <div class="content-card reveal wide-card">
-          <p class="eyebrow">04 · RESEARCH PAPERS</p>
-          <h2 id="publications-heading">Work in progress, questions in motion.</h2>
-          <p id="publications-body">Selected research projects at different stages of development and review.</p>
-          <div class="publication-list" id="publication-list">
-            <article class="no-link"><span>01</span><div><strong>Corruption and Investment Efficiency</strong><small>Journal of Business Ethics</small></div><b class="publication-status">Under review</b></article>
-            <article class="no-link"><span>02</span><div><strong>Measuring of Corporate Culture Washing</strong><small>Research project</small></div><b class="publication-status">Working paper</b></article>
-            <article class="no-link"><span>03</span><div><strong>Does Being Fair To LGBTQ+ Employees Benefit Corporations?</strong><small>Research project</small></div><b class="publication-status">Working paper</b></article>
-            <article class="no-link"><span>04</span><div><strong>Board Reform and Corporate Tax Avoidance: Worldwide Evidence</strong><small>Research project</small></div><b class="publication-status">Working paper</b></article>
-            <article class="no-link"><span>05</span><div><strong>Does Social Media Sentiment Affect Corporate ESG Performance: Evidence from YouTube</strong><small>Research project</small></div><b class="publication-status">Working paper</b></article>
-            <article class="no-link"><span>06</span><div><strong>Do Corporations Misuse Trust: An Empirical Study of Social Capital and Corporate Restatement Fraud</strong><small>Research project</small></div><b class="publication-status">Working paper</b></article>
-          </div>
-        </div>
-      </div>
-    </section>
 
     <section class="story-section" id="service" data-scene="5">
       <div class="section-inner align-left">
@@ -701,10 +871,56 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
       </div>
     </section>
 
-    <section class="story-section contact-section" id="contact" data-scene="8">
+    <section class="story-section" id="gallery" data-scene="8">
+      <div class="section-inner align-left">
+        <div class="content-card reveal wide-card gallery-card">
+          <div class="gallery-head">
+            <div class="gallery-head-copy">
+              <p class="eyebrow">08 · GALLERY</p>
+              <h2>Moments beyond the résumé.</h2>
+            </div>
+            <button class="gallery-admin-button" id="gallery-admin-button" type="button" aria-haspopup="dialog">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><rect x="5" y="10" width="14" height="10" rx="2"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/></svg>
+              Admin
+            </button>
+          </div>
+          <p>A place for photographs from conferences, travel, academic milestones, hobbies, and everyday moments. Visitors can move through the stream with the arrows, a trackpad, touch, or horizontal scrolling.</p>
+          <div class="gallery-stream-shell">
+            <button class="gallery-arrow prev" id="gallery-prev" type="button" aria-label="Previous photos">&#8592;</button>
+            <div class="gallery-stream" id="gallery-stream" aria-label="Photo gallery">
+              <div class="gallery-item"><span>Photo 01</span></div>
+              <div class="gallery-item"><span>Photo 02</span></div>
+              <div class="gallery-item"><span>Photo 03</span></div>
+              <div class="gallery-item"><span>Photo 04</span></div>
+              <div class="gallery-item"><span>Photo 05</span></div>
+              <div class="gallery-item"><span>Photo 06</span></div>
+            </div>
+            <button class="gallery-arrow next" id="gallery-next" type="button" aria-label="Next photos">&#8594;</button>
+          </div>
+          <div class="gallery-counter" id="gallery-counter">Swipe or use arrows</div>
+          <p class="gallery-note">Draft: the Admin button shows where your private upload login will live. Supabase will power the secure login and photo storage in the published version.</p>
+        </div>
+      </div>
+    </section>
+
+    <dialog class="admin-dialog" id="gallery-admin-dialog">
+      <div class="admin-dialog-inner">
+        <div class="admin-dialog-head">
+          <strong>Gallery Admin</strong>
+          <button class="admin-close" id="admin-close" type="button" aria-label="Close admin login">&#10005;</button>
+        </div>
+        <p>Your admin email is locked to this account. The password will be checked securely by Supabase and is never stored in this webpage.</p>
+        <label class="admin-field"><span>Email</span><input id="admin-email" type="email" autocomplete="username" value="dr.rezwanfmu@gmail.com" readonly aria-readonly="true"></label>
+        <label class="admin-field"><span>Password</span><input id="admin-password" type="password" autocomplete="current-password" placeholder="Password"></label>
+        <button class="admin-submit" id="admin-submit" type="button">Sign in</button>
+        <p class="admin-status" id="admin-status" role="status"></p>
+      </div>
+    </dialog>
+
+    <section class="story-section contact-section" id="contact" data-scene="9">
       <div class="section-inner center-copy">
         <div class="contact-copy reveal">
-          <p class="eyebrow">08 · CONTACT</p>
+          <p class="eyebrow">09 · CONTACT</p>
           <h2 id="contact-heading">Every path eventually<br><em>connects to people.</em></h2>
           <p id="contact-body">For research conversations, academic collaboration, or professional inquiries.</p>
           <div class="hero-actions centered">
@@ -725,8 +941,10 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
       </div>
       <div class="footer-actions" aria-label="Footer links">
         <a href="#home">Home</a>
+        <a href="#experience">Experience</a>
         <a href="#research">Research</a>
         <a href="#teaching">Teaching</a>
+        <a href="#gallery">Gallery</a>
         <a href="https://www.linkedin.com/in/mdrezwanhratul/" target="_blank" rel="noopener">LinkedIn ↗</a>
         <a href="https://scholar.google.com/citations?hl=en&amp;authuser=1&amp;user=27se0i0AAAAJ" target="_blank" rel="noopener">Google Scholar ↗</a>
         <a href="mailto:dr.rezwanfmu@gmail.com">Email</a>
@@ -754,17 +972,18 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
   const nav = document.querySelector('.site-nav');
   const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  const labels = ['Origin', 'Journey', 'Research', 'Teaching', 'Papers', 'Service', 'Awards', 'Hobbies', 'Connection'];
+  const labels = ['Origin', 'Journey', 'Experience', 'Research', 'Teaching', 'Service', 'Awards', 'Hobbies', 'Gallery', 'Connection'];
   const palettes = [
-    ['#071017','#17202a','#d8ad67'],
-    ['#081017','#253044','#e0b56d'],
-    ['#04131a','#0b3440','#58a8b4'],
-    ['#091217','#29312c','#d7aa62'],
-    ['#0d1014','#38271c','#d0a065'],
-    ['#071419','#16323a','#71b7b4'],
-    ['#07101b','#242b44','#e3b66d'],
-    ['#100a18','#332141','#c88bd8'],
-    ['#020a12','#0a2740','#d8ad67']
+    ['#07111d','#173a65','#ff8a62'],
+    ['#091224','#3a3f7d','#ffc45d'],
+    ['#07152b','#234f79','#66dff2'],
+    ['#04151e','#0f5663','#4ce5d3'],
+    ['#101224','#4d365f','#ffbf52'],
+    ['#06151b','#165462','#55dfca'],
+    ['#0c1028','#40317c','#ffd05a'],
+    ['#16091f','#5a2867','#d97bff'],
+    ['#071629','#0c5c75','#4edcff'],
+    ['#03101d','#24417a','#ff8967']
   ];
 
   const COUNT = 48;
@@ -815,6 +1034,22 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
       const x=.15+u*.70;
       const y=.80 - .30*u + .04*Math.sin(u*Math.PI*2.5);
       p.push(point(x,y,1.05));
+    }
+    return p;
+  }
+
+
+  function sceneExperience(){
+    const p=[];
+    // Four career stations linked by a rising path.
+    const stations=[[.22,.68],[.40,.56],[.58,.45],[.76,.33]];
+    for(let s=0;s<4;s++){
+      const [cx,cy]=stations[s];
+      for(let j=0;j<12;j++){
+        const a=(j/12)*Math.PI*2;
+        const r=.025 + (j%3)*.008;
+        p.push(point(cx+Math.cos(a)*r,cy+Math.sin(a)*r*.72,j===0?1.55:.72));
+      }
     }
     return p;
   }
@@ -909,6 +1144,16 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
     return p;
   }
 
+  function sceneGallery(){
+    const p=[];
+    // Photo mosaic: the same points settle into a framed image grid.
+    for(let i=0;i<COUNT;i++){
+      const col=i%8, row=Math.floor(i/8);
+      p.push(point(.25+col*.075,.30+row*.085,(col===0||col===7||row===0||row===5)?1.05:.7));
+    }
+    return p;
+  }
+
   function sceneContact(){
     const p=[];
     // globe ring, same points form an orbital network
@@ -920,19 +1165,20 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
     return p;
   }
 
-  const SCENES=[sceneHome(),sceneAbout(),sceneResearch(),sceneTeaching(),scenePublications(),sceneService(),sceneAwards(),sceneHobbies(),sceneContact()];
+  const SCENES=[sceneHome(),sceneAbout(),sceneExperience(),sceneResearch(),sceneTeaching(),sceneService(),sceneAwards(),sceneHobbies(),sceneGallery(),sceneContact()];
 
   // edges are scene-specific, but points persist and morph between configurations
   function chainEdges(start,end){ const e=[]; for(let i=start;i<end;i++) e.push([i,i+1]); return e; }
   const EDGES=[
     [...chainEdges(0,22),...chainEdges(24,46),[11,36],[12,35],[23,24]],
     [...chainEdges(0,22),...chainEdges(24,46),[4,27],[10,31],[16,36],[21,43]],
+    [...chainEdges(0,10),...chainEdges(12,22),...chainEdges(24,34),...chainEdges(36,46),[0,12],[12,24],[24,36],[5,17],[17,29],[29,41]],
     Array.from({length:72},(_,i)=>[(i*7)%COUNT,(i*13+5)%COUNT]),
     [...chainEdges(0,14),[15,0],...Array.from({length:24},(_,i)=>[16+i,16+((i+8)%32)])],
-    [...chainEdges(0,22),...chainEdges(24,46),[0,24],[5,29],[11,35],[18,42],[23,47]],
     [...chainEdges(0,22),[23,0],...chainEdges(24,46),[47,24],[3,30],[8,35],[13,40],[18,45]],
     [...chainEdges(0,46),...Array.from({length:6},(_,i)=>[i*8,Math.min(47,i*8+8)])],
     [...chainEdges(0,22),...chainEdges(24,46),[0,24],[6,30],[12,36],[18,42],[23,47]],
+    [...Array.from({length:42},(_,i)=>[i,i+1]).filter(([a,b])=>Math.floor(a/8)===Math.floor(b/8)),...Array.from({length:40},(_,i)=>[i,i+8]).filter(([a,b])=>b<48)],
     [...chainEdges(0,46),[47,0],...Array.from({length:18},(_,i)=>[(i*5)%COUNT,(i*11+9)%COUNT])]
   ];
 
@@ -1056,8 +1302,10 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
   }
 
   function drawRibbon(points, i, t){
-    // A persistent luminous thread that physically changes shape with the scene.
+    // A persistent luminous thread that physically changes shape and color with the scene.
     const ids=[0,4,8,12,16,20,23,27,31,35,39,43,47];
+    const next=Math.min(i+1,palettes.length-1);
+    const accent=mixColor(palettes[i][2],palettes[next][2],ease(t));
     ctx.save();
     ctx.lineCap='round';ctx.lineJoin='round';
     const path=new Path2D();
@@ -1067,8 +1315,8 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
       path.quadraticCurveTo(p.x*W,p.y*H,(p.x+q.x)*.5*W,(p.y+q.y)*.5*H);
     }
     const last=points[ids.at(-1)];path.lineTo(last.x*W,last.y*H);
-    ctx.strokeStyle='rgba(224,179,103,.10)';ctx.lineWidth=12;ctx.shadowBlur=26;ctx.shadowColor='rgba(216,173,103,.45)';ctx.stroke(path);
-    ctx.strokeStyle='rgba(236,199,133,.75)';ctx.lineWidth=1.4;ctx.shadowBlur=12;ctx.stroke(path);
+    ctx.strokeStyle=accent;ctx.globalAlpha=.12;ctx.lineWidth=13;ctx.shadowBlur=28;ctx.shadowColor=accent;ctx.stroke(path);
+    ctx.strokeStyle=accent;ctx.globalAlpha=.78;ctx.lineWidth=1.5;ctx.shadowBlur=14;ctx.stroke(path);
     ctx.restore();
   }
 
@@ -1103,10 +1351,16 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
     bg.addColorStop(1,'#020608');
     ctx.fillStyle=bg;ctx.globalAlpha=1;ctx.fillRect(0,0,W,H);
 
+    // A restrained color bloom follows the same palette interpolation as the morph.
+    const accent=mixColor(pA[2],pB[2],te);
+    const bloom=ctx.createRadialGradient(W*(.77-(scrollProgress*.24)),H*(.25+scrollProgress*.18),0,W*.64,H*.38,Math.min(W,H)*.56);
+    bloom.addColorStop(0,accent); bloom.addColorStop(.34,accent); bloom.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.save(); ctx.globalAlpha=.10; ctx.fillStyle=bloom; ctx.fillRect(0,0,W,H); ctx.restore();
+
     // scene-specific ambient forms crossfade while the actual point geometry morphs.
     const curAlpha=1-smooth(clamp(t*1.55,0,1));
     const nextAlpha=smooth(clamp((t-.35)*1.55,0,1));
-    const sceneEffects=[drawDesk,()=>{},()=>drawGrid(.42,scrollProgress*130,scrollProgress*55),drawBoard,drawPages,()=>drawGrid(.18,scrollProgress*70,scrollProgress*25),()=>{},()=>drawGrid(.20,scrollProgress*80,scrollProgress*35),drawGlobe];
+    const sceneEffects=[drawDesk,()=>{},()=>drawGrid(.16,scrollProgress*55,scrollProgress*18),()=>drawGrid(.42,scrollProgress*130,scrollProgress*55),drawBoard,()=>drawGrid(.18,scrollProgress*70,scrollProgress*25),()=>{},()=>drawGrid(.20,scrollProgress*80,scrollProgress*35),()=>drawGrid(.30,scrollProgress*55,scrollProgress*20),drawGlobe];
     sceneEffects[i]?.(curAlpha);
     sceneEffects[i+1]?.(nextAlpha);
 
@@ -1114,8 +1368,8 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
     const lx=lerp(.68,.42,scrollProgress)*W + (mx-.5)*20;
     const ly=lerp(.20,.30,scrollProgress)*H;
     const light=ctx.createRadialGradient(lx,ly,0,lx,ly,Math.min(W,H)*.44);
-    light.addColorStop(0,'rgba(236,186,104,.15)');light.addColorStop(.35,'rgba(236,186,104,.045)');light.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.fillStyle=light;ctx.fillRect(0,0,W,H);
+    light.addColorStop(0,accent);light.addColorStop(.35,accent);light.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.save();ctx.globalAlpha=.10;ctx.fillStyle=light;ctx.fillRect(0,0,W,H);ctx.restore();
 
     const points=interpPoints(i,t);
     drawEdges(points,EDGES[i],(1-te)*.34,'rgba(175,216,220,.55)');
@@ -1154,6 +1408,48 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
 
   const copyrightYear = document.getElementById('copyright-year');
   if(copyrightYear) copyrightYear.textContent = new Date().getFullYear();
+
+  // Gallery stream controls. The published admin build will replace placeholder
+  // items with photos loaded from Supabase Storage.
+  const galleryStream = document.getElementById('gallery-stream');
+  const galleryPrev = document.getElementById('gallery-prev');
+  const galleryNext = document.getElementById('gallery-next');
+  const galleryCounter = document.getElementById('gallery-counter');
+  function galleryStep(){ return Math.min(galleryStream?.clientWidth * .78 || 320, 370); }
+  function updateGalleryArrows(){
+    if(!galleryStream) return;
+    const max = galleryStream.scrollWidth - galleryStream.clientWidth - 2;
+    galleryPrev.disabled = galleryStream.scrollLeft <= 2;
+    galleryNext.disabled = galleryStream.scrollLeft >= max;
+    if(galleryCounter){
+      const pct = max > 0 ? Math.round((galleryStream.scrollLeft / max) * 100) : 100;
+      galleryCounter.textContent = max > 0 ? `Gallery position ${pct}% · swipe or use arrows` : 'Gallery';
+    }
+  }
+  galleryPrev?.addEventListener('click',()=>galleryStream.scrollBy({left:-galleryStep(),behavior:'smooth'}));
+  galleryNext?.addEventListener('click',()=>galleryStream.scrollBy({left:galleryStep(),behavior:'smooth'}));
+  galleryStream?.addEventListener('scroll',updateGalleryArrows,{passive:true});
+  addEventListener('resize',updateGalleryArrows,{passive:true});
+  setTimeout(updateGalleryArrows,50);
+
+  // Admin login configuration. Passwords are never embedded in the page.
+  const ADMIN_EMAIL = 'dr.rezwanfmu@gmail.com';
+  const adminDialog = document.getElementById('gallery-admin-dialog');
+  const adminButton = document.getElementById('gallery-admin-button');
+  const adminClose = document.getElementById('admin-close');
+  const adminSubmit = document.getElementById('admin-submit');
+  const adminStatus = document.getElementById('admin-status');
+  adminButton?.addEventListener('click',()=>adminDialog?.showModal());
+  adminClose?.addEventListener('click',()=>adminDialog?.close());
+  adminDialog?.addEventListener('click',e=>{ if(e.target===adminDialog) adminDialog.close(); });
+  adminSubmit?.addEventListener('click',()=>{
+    const enteredEmail = document.getElementById('admin-email')?.value?.trim().toLowerCase();
+    if(enteredEmail !== ADMIN_EMAIL){
+      adminStatus.textContent='This account is not authorized for gallery administration.';
+      return;
+    }
+    adminStatus.textContent='Admin email configured. Connect Supabase to activate secure password validation and uploads.';
+  });
 
   resize(); updateScroll(); revealObserver(); requestAnimationFrame(render);
 })();

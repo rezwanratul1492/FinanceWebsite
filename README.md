@@ -1,61 +1,52 @@
-# FinanceWebsite — Md Rezwan Hossain Ratul
+# Md Rezwan H Ratul — Finance Website
 
-Personal academic portfolio for **Md Rezwan Hossain Ratul**, Assistant Professor of Finance at Francis Marion University.
+This folder is the GitHub Pages release for:
 
-## Live site
+- Repository: https://github.com/rezwanratul1492/FinanceWebsite
+- Public site: https://rezwanratul1492.github.io/FinanceWebsite/
 
-Once GitHub Pages is enabled for this repository:
+## Current website sections
 
-**https://rezwanratul1492.github.io/FinanceWebsite/**
+Home → About → Experience → Research → Teaching → Academic Service → Awards → Hobbies → Gallery → Contact
 
-## Files to upload to the repository root
+The current release includes:
 
-- `index.html` — the complete website and morphing animation
-- `404.html` — custom not-found page
-- `assets/favicon.svg` — browser favicon
-- `assets/apple-touch-icon.png` — mobile/bookmark icon
-- `assets/social-preview.png` — LinkedIn/social sharing preview
-- `site.webmanifest` — site metadata
-- `robots.txt` — search crawler instructions
-- `sitemap.xml` — search-engine sitemap
-- `.nojekyll` — tells GitHub Pages to serve the files as-is
+- colorful scroll-driven morphing canvas background
+- larger profile-photo placeholder beside the hero name
+- Experience section
+- Research interests plus current research/working papers
+- Teaching history and classroom software
+- Academic Service
+- Awards & Honors
+- Hobbies
+- horizontal Gallery with left/right navigation
+- Gallery Admin login shell fixed to dr.rezwanfmu@gmail.com
+- SEO/social metadata, favicon, web manifest, sitemap, robots.txt and custom 404 page
 
-## Publishing on GitHub Pages
+## Important: Gallery admin status
 
-1. Upload all files and the `assets` folder to the root of the `FinanceWebsite` repository.
-2. Open **Settings → Pages**.
-3. Under **Build and deployment**, choose **Deploy from a branch**.
-4. Select **main** and **/(root)**, then Save.
-5. The site will publish at the URL above.
+The Admin login UI is present, but secure login/upload is NOT active until Supabase is connected.
+No password is stored in this repository.
 
-## Updating text later
+## Important: Profile photo status
 
-For a small text change:
+The hero currently shows the MR placeholder. When the final profile image is ready, it can be stored under assets/profile/ and the hero markup can be updated to display it.
 
-1. Open `index.html` on GitHub.
-2. Click the pencil icon (**Edit this file**).
-3. Use the browser's Find command to locate the text you want to change.
-4. Edit it and click **Commit changes**.
+## Main files
 
-GitHub Pages will republish after the commit.
+- index.html — the complete public website
+- 404.html — GitHub Pages 404 page
+- assets/ — icons/social preview plus future profile/gallery files
+- site.webmanifest — browser/app metadata
+- robots.txt — crawler instructions
+- sitemap.xml — search-engine sitemap
+- .nojekyll — tells GitHub Pages to serve this static site directly
+- DEPLOY_TO_GITHUB.md — exact publishing steps
+- QUICK_EDIT_GUIDE.txt — simple maintenance notes
+- SUPABASE_GALLERY_SETUP.md — next steps for secure Gallery administration
 
-For larger layout, animation, or section changes, update `index.html` locally or replace it with a newer version.
+## Safest editing rule
 
-## Adding a CV later
+For ordinary text changes, edit only the visible content in index.html. Avoid changing the canvas/morph JavaScript near the bottom unless you intend to redesign the animation.
 
-The site already contains a hidden CV link. To enable it:
-
-1. Upload your CV to the repository root and name it `cv.pdf`.
-2. In `index.html`, search for `CV READY`.
-3. On the next `<a>` tag, remove the word `hidden`.
-4. Commit the change.
-
-The footer will then show **Download CV**.
-
-## Social preview
-
-The Open Graph metadata is configured for the GitHub Pages URL and uses `assets/social-preview.png`. If the domain changes later, update the canonical URL and the `og:url`, `og:image`, and JSON-LD `url` values in `index.html`.
-
-## Custom domain later
-
-GitHub Pages supports custom domains. If you purchase one later, configure it under **Settings → Pages → Custom domain** and update the URLs in the metadata above.
+For larger changes, keep a backup of the current working index.html before replacing it.
