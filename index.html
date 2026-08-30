@@ -191,6 +191,10 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
 .awards-list small { color:#8e999e; font-size:10px; line-height:1.45; }
 @media (max-width: 560px) { .awards-list { grid-template-columns:1fr; } .awards-list article { min-height:108px; } }
 
+/* Performance mode is enabled automatically only when the canvas must be heavily downscaled.
+   It removes the decorative noise blend layer; all core morph visuals remain. */
+.perf-large .noise { display:none; }
+
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior:auto; }
   *, *::before, *::after { animation-duration:.01ms!important; animation-iteration-count:1!important; transition-duration:.01ms!important; }
@@ -1232,17 +1236,32 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
   let dpr=1,W=0,H=0;
   let scrollProgress=0, targetProgress=0;
   let mx=.5,my=.5,targetMx=.5,targetMy=.5;
+  let renderQueued=false, lastFrameTime=0;
+
+  // Keep the abstract canvas within a fixed pixel budget on every display.
+  // Text, cards, photos and the rest of the DOM remain native-resolution.
+  const MAX_CANVAS_PIXELS=2200000;
+  const MAX_CANVAS_SCALE=1.35;
+  const MIN_CANVAS_SCALE=.28;
+
+  function requestRender(){
+    if(renderQueued) return;
+    renderQueued=true;
+    requestAnimationFrame(render);
+  }
 
   function resize(){
-    W=innerWidth; H=innerHeight;
-    // Large/high-DPI displays can otherwise render millions of extra canvas pixels.
-    // This adaptive cap is visually subtle but materially reduces GPU/CPU load.
+    W=Math.max(1,innerWidth); H=Math.max(1,innerHeight);
     const rawDpr=devicePixelRatio||1;
-    const dprCap=W>=2200?1.25:(W>=1500?1.5:1.75);
-    dpr=Math.min(rawDpr,dprCap);
-    canvas.width=Math.round(W*dpr); canvas.height=Math.round(H*dpr);
+    const pixelBudgetScale=Math.sqrt(MAX_CANVAS_PIXELS/(W*H));
+    dpr=Math.min(rawDpr,MAX_CANVAS_SCALE,pixelBudgetScale);
+    dpr=Math.max(MIN_CANVAS_SCALE,dpr);
+    canvas.width=Math.max(1,Math.round(W*dpr));
+    canvas.height=Math.max(1,Math.round(H*dpr));
     canvas.style.width=W+'px'; canvas.style.height=H+'px';
     ctx.setTransform(dpr,0,0,dpr,0,0);
+    document.documentElement.classList.toggle('perf-large',dpr<.72);
+    requestRender();
   }
 
   function getProgress(){
@@ -1264,6 +1283,7 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
   function updateScroll(){
     targetProgress=getProgress();
     header.classList.toggle('scrolled',scrollY>25);
+    requestRender();
   }
 
   function drawGrid(alpha, offsetX, offsetY){
@@ -1353,7 +1373,7 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
   }
 
   function drawRibbon(points, i, t){
-    // A persistent luminous thread that physically changes shape and color with the scene.
+    // Layered strokes recreate the glow without expensive canvas shadowBlur filters.
     const ids=[0,4,8,12,16,20,23,27,31,35,39,43,47];
     const next=Math.min(i+1,palettes.length-1);
     const accent=mixColor(palettes[i][2],palettes[next][2],ease(t));
@@ -1366,8 +1386,10 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
       path.quadraticCurveTo(p.x*W,p.y*H,(p.x+q.x)*.5*W,(p.y+q.y)*.5*H);
     }
     const last=points[ids.at(-1)];path.lineTo(last.x*W,last.y*H);
-    ctx.strokeStyle=accent;ctx.globalAlpha=.12;ctx.lineWidth=13;ctx.shadowBlur=28;ctx.shadowColor=accent;ctx.stroke(path);
-    ctx.strokeStyle=accent;ctx.globalAlpha=.78;ctx.lineWidth=1.5;ctx.shadowBlur=14;ctx.stroke(path);
+    ctx.strokeStyle=accent;
+    ctx.globalAlpha=.055;ctx.lineWidth=16;ctx.stroke(path);
+    ctx.globalAlpha=.12;ctx.lineWidth=8;ctx.stroke(path);
+    ctx.globalAlpha=.82;ctx.lineWidth=1.55;ctx.stroke(path);
     ctx.restore();
   }
 
@@ -1376,55 +1398,58 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
     const colA=palettes[i][2], colB=palettes[next][2];
     const c=mixColor(colA,colB,ease(t));
     ctx.save();
+    ctx.fillStyle=c;ctx.strokeStyle=c;
     for(let k=0;k<points.length;k++){
       const p=points[k];
       const x=p.x*W + (mx-.5)*(6+(k%5)*2);
       const y=p.y*H + (my-.5)*(4+(k%7));
       const r=(1.45 + p.s*1.65) * (W<700?.82:1);
+      if(k%7===0){
+        ctx.beginPath();ctx.arc(x,y,r*3.2,0,Math.PI*2);ctx.globalAlpha=.055;ctx.fill();
+      }
       ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);
-      ctx.fillStyle=c;ctx.globalAlpha=.38+(k%7===0?.4:.08);ctx.shadowBlur=15;ctx.shadowColor=c;ctx.fill();
-      if(k%8===0){ctx.beginPath();ctx.arc(x,y,r*3.5,0,Math.PI*2);ctx.strokeStyle=c;ctx.globalAlpha=.09;ctx.lineWidth=1;ctx.stroke();}
+      ctx.globalAlpha=.46+(k%7===0?.32:.06);ctx.fill();
+      if(k%8===0){ctx.beginPath();ctx.arc(x,y,r*3.5,0,Math.PI*2);ctx.globalAlpha=.09;ctx.lineWidth=1;ctx.stroke();}
     }
     ctx.restore();
   }
 
-  let lastFrameTime=0;
   function render(now=0){
-    const minFrameMs=W>=1800?22:16; // ~45 fps on very large screens, ~60 fps elsewhere
-    if(now-lastFrameTime < minFrameMs){ requestAnimationFrame(render); return; }
+    renderQueued=false;
+
+    // Cap animation work around 60 fps even on 120/144 Hz monitors.
+    if(!reduceMotion && now-lastFrameTime < 15){
+      requestRender();
+      return;
+    }
     lastFrameTime=now;
-    scrollProgress += (targetProgress-scrollProgress)*(reduceMotion?1:.075);
-    mx += (targetMx-mx)*.05; my += (targetMy-my)*.05;
+
+    const prevProgress=scrollProgress, prevMx=mx, prevMy=my;
+    scrollProgress += (targetProgress-scrollProgress)*(reduceMotion?1:.12);
+    mx += (targetMx-mx)*(reduceMotion?1:.085);
+    my += (targetMy-my)*(reduceMotion?1:.085);
     const {i,t}=getSegment(scrollProgress);
     const te=ease(t);
     const pA=palettes[i],pB=palettes[i+1];
 
-    // atmospheric background
-    const bg=ctx.createRadialGradient(W*(.56+(mx-.5)*.06),H*(.46+(my-.5)*.04),20,W*.55,H*.48,Math.max(W,H)*.78);
+    // One full-screen atmospheric gradient plus one restrained accent bloom.
+    const bg=ctx.createRadialGradient(W*(.56+(mx-.5)*.05),H*(.46+(my-.5)*.035),20,W*.55,H*.48,Math.max(W,H)*.78);
     bg.addColorStop(0,mixColor(pA[1],pB[1],te));
     bg.addColorStop(.52,mixColor(pA[0],pB[0],te));
     bg.addColorStop(1,'#020608');
     ctx.fillStyle=bg;ctx.globalAlpha=1;ctx.fillRect(0,0,W,H);
 
-    // A restrained color bloom follows the same palette interpolation as the morph.
     const accent=mixColor(pA[2],pB[2],te);
-    const bloom=ctx.createRadialGradient(W*(.77-(scrollProgress*.24)),H*(.25+scrollProgress*.18),0,W*.64,H*.38,Math.min(W,H)*.56);
-    bloom.addColorStop(0,accent); bloom.addColorStop(.34,accent); bloom.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.save(); ctx.globalAlpha=.10; ctx.fillStyle=bloom; ctx.fillRect(0,0,W,H); ctx.restore();
+    const bloom=ctx.createRadialGradient(W*(.77-(scrollProgress*.24)),H*(.25+scrollProgress*.18),0,W*.64,H*.38,Math.min(W,H)*.52);
+    bloom.addColorStop(0,accent); bloom.addColorStop(.30,accent); bloom.addColorStop(1,'rgba(0,0,0,0)');
+    ctx.save(); ctx.globalAlpha=.105; ctx.fillStyle=bloom; ctx.fillRect(0,0,W,H); ctx.restore();
 
-    // scene-specific ambient forms crossfade while the actual point geometry morphs.
+    // Scene-specific ambient forms crossfade while the actual point geometry morphs.
     const curAlpha=1-smooth(clamp(t*1.55,0,1));
     const nextAlpha=smooth(clamp((t-.35)*1.55,0,1));
     const sceneEffects=[drawDesk,()=>{},()=>drawGrid(.16,scrollProgress*55,scrollProgress*18),()=>drawGrid(.42,scrollProgress*130,scrollProgress*55),drawBoard,()=>drawGrid(.18,scrollProgress*70,scrollProgress*25),()=>{},()=>drawGrid(.20,scrollProgress*80,scrollProgress*35),()=>drawGrid(.30,scrollProgress*55,scrollProgress*20),drawGlobe];
     sceneEffects[i]?.(curAlpha);
     sceneEffects[i+1]?.(nextAlpha);
-
-    // large light source migrates across scenes
-    const lx=lerp(.68,.42,scrollProgress)*W + (mx-.5)*20;
-    const ly=lerp(.20,.30,scrollProgress)*H;
-    const light=ctx.createRadialGradient(lx,ly,0,lx,ly,Math.min(W,H)*.44);
-    light.addColorStop(0,accent);light.addColorStop(.35,accent);light.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.save();ctx.globalAlpha=.10;ctx.fillStyle=light;ctx.fillRect(0,0,W,H);ctx.restore();
 
     const points=interpPoints(i,t);
     drawEdges(points,EDGES[i],(1-te)*.34,'rgba(175,216,220,.55)');
@@ -1432,8 +1457,10 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
     drawRibbon(points,i,t);
     drawNodes(points,i,t);
 
-    // depth haze
-    const haze=ctx.createLinearGradient(0,0,0,H);haze.addColorStop(0,'rgba(0,0,0,.02)');haze.addColorStop(.78,'rgba(0,0,0,.05)');haze.addColorStop(1,'rgba(0,0,0,.38)');ctx.fillStyle=haze;ctx.globalAlpha=1;ctx.fillRect(0,0,W,H);
+    // Lightweight depth haze.
+    const haze=ctx.createLinearGradient(0,H*.68,0,H);
+    haze.addColorStop(0,'rgba(0,0,0,0)');haze.addColorStop(1,'rgba(0,0,0,.34)');
+    ctx.fillStyle=haze;ctx.globalAlpha=1;ctx.fillRect(0,H*.68,W,H*.32);
 
     const sceneIdx=Math.min(SCENES.length-1,Math.round(scrollProgress*(SCENES.length-1)));
     meter.style.height=`${scrollProgress*100}%`;
@@ -1441,7 +1468,11 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
     sceneName.textContent=labels[sceneIdx];
     navLinks.forEach((a,k)=>a.classList.toggle('active',k===sceneIdx));
 
-    requestAnimationFrame(render);
+    // Stop the animation loop completely once the morph/parallax settles.
+    const stillMoving = Math.abs(targetProgress-scrollProgress)>.00015 || Math.abs(targetMx-mx)>.001 || Math.abs(targetMy-my)>.001;
+    if(stillMoving || Math.abs(scrollProgress-prevProgress)>.00001 || Math.abs(mx-prevMx)>.0001 || Math.abs(my-prevMy)>.0001){
+      requestRender();
+    }
   }
 
   function revealObserver(){
@@ -1451,7 +1482,7 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
 
   addEventListener('resize',resize,{passive:true});
   addEventListener('scroll',updateScroll,{passive:true});
-  addEventListener('pointermove',e=>{targetMx=e.clientX/innerWidth;targetMy=e.clientY/innerHeight},{passive:true});
+  addEventListener('pointermove',e=>{targetMx=e.clientX/innerWidth;targetMy=e.clientY/innerHeight;requestRender()},{passive:true});
   menuToggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(open));});
   navLinks.forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');}));
 
@@ -1806,7 +1837,7 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
   if(document.readyState==='complete') setTimeout(initGalleryBackend,0);
   else addEventListener('load',()=>setTimeout(initGalleryBackend,0),{once:true});
 
-  resize(); updateScroll(); revealObserver(); requestAnimationFrame(render);
+  resize(); updateScroll(); revealObserver(); requestRender();
 })();
 
 </script>
