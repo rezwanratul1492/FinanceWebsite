@@ -27,6 +27,7 @@
 
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="apple-touch-icon" href="assets/apple-touch-icon.png" />
+  <link rel="preload" as="image" href="assets/profile/rezwan-profile.webp" type="image/webp" />
   <link rel="manifest" href="site.webmanifest" />
   <title>Md Rezwan Hossain Ratul | Assistant Professor of Finance</title>
 
@@ -495,6 +496,7 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
   background:radial-gradient(circle at 30% 20%, rgba(86,218,255,.18), transparent 38%),
              radial-gradient(circle at 80% 82%, rgba(234,96,255,.16), transparent 40%);
 }
+.hero-profile-inner img { width:100%; height:100%; object-fit:cover; object-position:center center; display:block; position:relative; z-index:1; }
 .profile-placeholder { position:relative; text-align:center; padding:16px; }
 .profile-placeholder strong { display:block; font-family:var(--font-serif); font-size:46px; font-weight:500; color:#f2d6a0; }
 .profile-placeholder span { display:block; margin-top:8px; color:#9ba8b4; font-size:9px; letter-spacing:.15em; text-transform:uppercase; }
@@ -542,6 +544,23 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
 .admin-field input:focus { border-color:rgba(89,199,255,.55); }
 .admin-submit { margin-top:18px; width:100%; min-height:43px; border:0; border-radius:999px; background:linear-gradient(90deg,#58bfff,#a967ff,#ee79ba); color:#071017; font-weight:700; cursor:pointer; }
 .admin-status { min-height:18px; margin:10px 0 0!important; color:#c6a9ff!important; }
+.admin-login[hidden], .admin-panel[hidden] { display:none!important; }
+.admin-panel { margin-top:4px; }
+.admin-panel-head { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:11px 0 15px; border-bottom:1px solid rgba(255,255,255,.10); }
+.admin-panel-head span { color:#9aa8af; font-size:10px; line-height:1.45; }
+.admin-secondary { border:1px solid rgba(255,255,255,.13); background:rgba(255,255,255,.035); color:#dce3e7; border-radius:999px; padding:8px 12px; cursor:pointer; font-size:10px; }
+.admin-upload { display:grid; gap:10px; padding:16px 0; border-bottom:1px solid rgba(255,255,255,.10); }
+.admin-upload input[type=file] { color:#aeb9bf; font-size:11px; }
+.admin-upload-note { margin:0!important; color:#7f8e96!important; font-size:10px!important; }
+.admin-gallery-list { display:grid; gap:9px; max-height:260px; overflow:auto; padding-top:14px; }
+.admin-gallery-row { display:grid; grid-template-columns:54px minmax(0,1fr) auto; gap:10px; align-items:center; padding:8px; border:1px solid rgba(255,255,255,.09); border-radius:12px; background:rgba(255,255,255,.025); }
+.admin-gallery-row img { width:54px; height:44px; border-radius:8px; object-fit:cover; }
+.admin-gallery-row strong { display:block; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:11px; font-weight:500; }
+.admin-row-actions { display:flex; gap:5px; }
+.admin-row-actions button { width:29px; height:29px; padding:0; border:1px solid rgba(255,255,255,.11); border-radius:8px; background:rgba(255,255,255,.035); color:#d8e0e4; cursor:pointer; }
+.admin-row-actions button:hover { border-color:rgba(91,205,255,.45); color:white; }
+.gallery-empty { flex:0 0 min(520px,86vw); min-height:220px; display:grid; place-items:center; padding:28px; border:1px dashed rgba(255,255,255,.16); border-radius:18px; color:#91a0a8; text-align:center; background:linear-gradient(135deg,rgba(68,111,180,.08),rgba(190,75,196,.06)); scroll-snap-align:start; }
+.gallery-loading { flex:0 0 min(420px,80vw); min-height:220px; display:grid; place-items:center; color:#91a0a8; border:1px solid rgba(255,255,255,.08); border-radius:18px; background:rgba(255,255,255,.02); }
 
 @media (max-width:1100px){
   .hero-heading-row { width:min(860px,100%); gap:28px; }
@@ -644,9 +663,9 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
         <p class="eyebrow reveal" id="home-eyebrow">ASSISTANT PROFESSOR OF FINANCE · FRANCIS MARION UNIVERSITY</p>
         <div class="hero-heading-row reveal">
           <h1 id="home-title">Md Rezwan Hossain<br><em>Ratul</em></h1>
-          <div class="hero-profile" aria-label="Profile photo placeholder">
+          <div class="hero-profile">
             <div class="hero-profile-inner">
-              <div class="profile-placeholder"><strong>MR</strong><span>Your profile photo</span></div>
+              <img src="assets/profile/rezwan-profile.webp" alt="Portrait of Md Rezwan Hossain Ratul" width="640" height="717" loading="eager" decoding="async" fetchpriority="high">
             </div>
           </div>
         </div>
@@ -888,17 +907,12 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
           <div class="gallery-stream-shell">
             <button class="gallery-arrow prev" id="gallery-prev" type="button" aria-label="Previous photos">&#8592;</button>
             <div class="gallery-stream" id="gallery-stream" aria-label="Photo gallery">
-              <div class="gallery-item"><span>Photo 01</span></div>
-              <div class="gallery-item"><span>Photo 02</span></div>
-              <div class="gallery-item"><span>Photo 03</span></div>
-              <div class="gallery-item"><span>Photo 04</span></div>
-              <div class="gallery-item"><span>Photo 05</span></div>
-              <div class="gallery-item"><span>Photo 06</span></div>
+              <div class="gallery-loading">Loading gallery…</div>
             </div>
             <button class="gallery-arrow next" id="gallery-next" type="button" aria-label="Next photos">&#8594;</button>
           </div>
           <div class="gallery-counter" id="gallery-counter">Swipe or use arrows</div>
-          <p class="gallery-note">Draft: the Admin button shows where your private upload login will live. Supabase will power the secure login and photo storage in the published version.</p>
+          <p class="gallery-note" id="gallery-note">Photos are loaded from the gallery service. Use the Admin button to manage them.</p>
         </div>
       </div>
     </section>
@@ -909,10 +923,25 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
           <strong>Gallery Admin</strong>
           <button class="admin-close" id="admin-close" type="button" aria-label="Close admin login">&#10005;</button>
         </div>
-        <p>Your admin email is locked to this account. The password will be checked securely by Supabase and is never stored in this webpage.</p>
-        <label class="admin-field"><span>Email</span><input id="admin-email" type="email" autocomplete="username" value="dr.rezwanfmu@gmail.com" readonly aria-readonly="true"></label>
-        <label class="admin-field"><span>Password</span><input id="admin-password" type="password" autocomplete="current-password" placeholder="Password"></label>
-        <button class="admin-submit" id="admin-submit" type="button">Sign in</button>
+        <div class="admin-login" id="admin-login">
+          <p>Sign in to upload, caption, reorder, or remove Gallery photos. Your password is checked by Supabase and is never stored in this webpage.</p>
+          <label class="admin-field"><span>Email</span><input id="admin-email" type="email" autocomplete="username" value="dr.rezwanfmu@gmail.com" readonly aria-readonly="true"></label>
+          <label class="admin-field"><span>Password</span><input id="admin-password" type="password" autocomplete="current-password" placeholder="Password"></label>
+          <button class="admin-submit" id="admin-submit" type="button">Sign in</button>
+        </div>
+        <div class="admin-panel" id="admin-panel" hidden>
+          <div class="admin-panel-head">
+            <span>Signed in as<br><strong>dr.rezwanfmu@gmail.com</strong></span>
+            <button class="admin-secondary" id="admin-signout" type="button">Sign out</button>
+          </div>
+          <div class="admin-upload">
+            <label class="admin-field"><span>Select photo(s)</span><input id="admin-files" type="file" accept="image/jpeg,image/png,image/webp" multiple></label>
+            <label class="admin-field"><span>Caption (optional for one photo)</span><input id="admin-caption" type="text" maxlength="140" placeholder="e.g., FMA Annual Meeting 2026"></label>
+            <button class="admin-submit" id="admin-upload" type="button">Upload photo(s)</button>
+            <p class="admin-upload-note">Images are resized in your browser before upload to keep the website fast.</p>
+          </div>
+          <div class="admin-gallery-list" id="admin-gallery-list"></div>
+        </div>
         <p class="admin-status" id="admin-status" role="status"></p>
       </div>
     </dialog>
@@ -1187,8 +1216,12 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
   let mx=.5,my=.5,targetMx=.5,targetMy=.5;
 
   function resize(){
-    dpr=Math.min(devicePixelRatio||1,2);
     W=innerWidth; H=innerHeight;
+    // Large/high-DPI displays can otherwise render millions of extra canvas pixels.
+    // This adaptive cap is visually subtle but materially reduces GPU/CPU load.
+    const rawDpr=devicePixelRatio||1;
+    const dprCap=W>=2200?1.25:(W>=1500?1.5:1.75);
+    dpr=Math.min(rawDpr,dprCap);
     canvas.width=Math.round(W*dpr); canvas.height=Math.round(H*dpr);
     canvas.style.width=W+'px'; canvas.style.height=H+'px';
     ctx.setTransform(dpr,0,0,dpr,0,0);
@@ -1337,7 +1370,11 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
     ctx.restore();
   }
 
-  function render(){
+  let lastFrameTime=0;
+  function render(now=0){
+    const minFrameMs=W>=1800?22:16; // ~45 fps on very large screens, ~60 fps elsewhere
+    if(now-lastFrameTime < minFrameMs){ requestAnimationFrame(render); return; }
+    lastFrameTime=now;
     scrollProgress += (targetProgress-scrollProgress)*(reduceMotion?1:.075);
     mx += (targetMx-mx)*.05; my += (targetMy-my)*.05;
     const {i,t}=getSegment(scrollProgress);
@@ -1409,47 +1446,274 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
   const copyrightYear = document.getElementById('copyright-year');
   if(copyrightYear) copyrightYear.textContent = new Date().getFullYear();
 
-  // Gallery stream controls. The published admin build will replace placeholder
-  // items with photos loaded from Supabase Storage.
+  // Gallery stream + secure Supabase-backed admin controls.
   const galleryStream = document.getElementById('gallery-stream');
   const galleryPrev = document.getElementById('gallery-prev');
   const galleryNext = document.getElementById('gallery-next');
   const galleryCounter = document.getElementById('gallery-counter');
+  const galleryNote = document.getElementById('gallery-note');
+  const ADMIN_EMAIL = 'dr.rezwanfmu@gmail.com';
+  const SUPABASE_URL = 'https://uvexqjzxtshidvggryff.supabase.co';
+  const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_N-8rf34DbTx57_Ji2ougYw_APwtebBc';
+  const GALLERY_BUCKET = 'gallery';
+
+  let galleryClient = null;
+  let galleryItems = [];
+  let gallerySession = null;
+
+  const adminDialog = document.getElementById('gallery-admin-dialog');
+  const adminButton = document.getElementById('gallery-admin-button');
+  const adminClose = document.getElementById('admin-close');
+  const adminSubmit = document.getElementById('admin-submit');
+  const adminStatus = document.getElementById('admin-status');
+  const adminLogin = document.getElementById('admin-login');
+  const adminPanel = document.getElementById('admin-panel');
+  const adminPassword = document.getElementById('admin-password');
+  const adminSignout = document.getElementById('admin-signout');
+  const adminFiles = document.getElementById('admin-files');
+  const adminCaption = document.getElementById('admin-caption');
+  const adminUpload = document.getElementById('admin-upload');
+  const adminGalleryList = document.getElementById('admin-gallery-list');
+
   function galleryStep(){ return Math.min(galleryStream?.clientWidth * .78 || 320, 370); }
   function updateGalleryArrows(){
     if(!galleryStream) return;
-    const max = galleryStream.scrollWidth - galleryStream.clientWidth - 2;
-    galleryPrev.disabled = galleryStream.scrollLeft <= 2;
-    galleryNext.disabled = galleryStream.scrollLeft >= max;
+    const max = Math.max(0,galleryStream.scrollWidth - galleryStream.clientWidth - 2);
+    if(galleryPrev) galleryPrev.disabled = max===0 || galleryStream.scrollLeft <= 2;
+    if(galleryNext) galleryNext.disabled = max===0 || galleryStream.scrollLeft >= max;
     if(galleryCounter){
+      if(!galleryItems.length){ galleryCounter.textContent='Gallery'; return; }
       const pct = max > 0 ? Math.round((galleryStream.scrollLeft / max) * 100) : 100;
-      galleryCounter.textContent = max > 0 ? `Gallery position ${pct}% · swipe or use arrows` : 'Gallery';
+      galleryCounter.textContent = max > 0 ? `Gallery position ${pct}% · swipe or use arrows` : `${galleryItems.length} photo${galleryItems.length===1?'':'s'}`;
     }
   }
   galleryPrev?.addEventListener('click',()=>galleryStream.scrollBy({left:-galleryStep(),behavior:'smooth'}));
   galleryNext?.addEventListener('click',()=>galleryStream.scrollBy({left:galleryStep(),behavior:'smooth'}));
   galleryStream?.addEventListener('scroll',updateGalleryArrows,{passive:true});
   addEventListener('resize',updateGalleryArrows,{passive:true});
-  setTimeout(updateGalleryArrows,50);
 
-  // Admin login configuration. Passwords are never embedded in the page.
-  const ADMIN_EMAIL = 'dr.rezwanfmu@gmail.com';
-  const adminDialog = document.getElementById('gallery-admin-dialog');
-  const adminButton = document.getElementById('gallery-admin-button');
-  const adminClose = document.getElementById('admin-close');
-  const adminSubmit = document.getElementById('admin-submit');
-  const adminStatus = document.getElementById('admin-status');
+  function publicGalleryUrl(path){
+    if(!galleryClient) return '';
+    return galleryClient.storage.from(GALLERY_BUCKET).getPublicUrl(path).data.publicUrl;
+  }
+
+  function renderGallery(){
+    if(!galleryStream) return;
+    galleryStream.replaceChildren();
+    if(!galleryItems.length){
+      const empty=document.createElement('div');
+      empty.className='gallery-empty';
+      empty.innerHTML='<div><strong>Gallery coming soon.</strong><br><span>New photographs will appear here as they are added.</span></div>';
+      galleryStream.append(empty);
+      updateGalleryArrows();
+      renderAdminGalleryList();
+      return;
+    }
+    const frag=document.createDocumentFragment();
+    galleryItems.forEach((item,idx)=>{
+      const card=document.createElement('figure');
+      card.className='gallery-item';
+      const img=document.createElement('img');
+      img.src=publicGalleryUrl(item.storage_path);
+      img.alt=item.caption || `Gallery photo ${idx+1}`;
+      img.loading=idx<2?'eager':'lazy';
+      img.decoding='async';
+      if(idx===0) img.fetchPriority='low';
+      const cap=document.createElement('span');
+      cap.textContent=item.caption || `Photo ${String(idx+1).padStart(2,'0')}`;
+      card.append(img,cap);
+      frag.append(card);
+    });
+    galleryStream.append(frag);
+    requestAnimationFrame(updateGalleryArrows);
+    renderAdminGalleryList();
+  }
+
+  async function loadGallery(){
+    if(!galleryClient) return;
+    const {data,error}=await galleryClient.from('gallery_items')
+      .select('id,storage_path,caption,sort_order,created_at')
+      .order('sort_order',{ascending:true})
+      .order('created_at',{ascending:true});
+    if(error){
+      console.error('Gallery load error',error);
+      galleryItems=[];
+      renderGallery();
+      if(galleryNote) galleryNote.textContent='Gallery is temporarily unavailable. Please try again later.';
+      return;
+    }
+    galleryItems=data||[];
+    if(galleryNote) galleryNote.textContent='Use the arrows, trackpad, mouse, or swipe to browse.';
+    renderGallery();
+  }
+
+  function isAdminSession(session){
+    return (session?.user?.email||'').toLowerCase()===ADMIN_EMAIL;
+  }
+
+  async function applyAdminSession(session){
+    gallerySession=isAdminSession(session)?session:null;
+    if(session && !gallerySession && galleryClient){
+      await galleryClient.auth.signOut();
+    }
+    if(adminLogin) adminLogin.hidden=!!gallerySession;
+    if(adminPanel) adminPanel.hidden=!gallerySession;
+    if(adminButton) adminButton.textContent=gallerySession?'Manage Gallery':'Admin';
+    if(adminStatus) adminStatus.textContent=gallerySession?'Admin access active.':'';
+    renderAdminGalleryList();
+  }
+
+  function renderAdminGalleryList(){
+    if(!adminGalleryList || !gallerySession) return;
+    adminGalleryList.replaceChildren();
+    if(!galleryItems.length){
+      const p=document.createElement('p');
+      p.textContent='No photos yet. Upload your first photo above.';
+      p.style.margin='0';
+      adminGalleryList.append(p);
+      return;
+    }
+    galleryItems.forEach((item,index)=>{
+      const row=document.createElement('div');
+      row.className='admin-gallery-row';
+      const img=document.createElement('img');
+      img.src=publicGalleryUrl(item.storage_path); img.alt=''; img.loading='lazy';
+      const text=document.createElement('div');
+      const strong=document.createElement('strong');
+      strong.textContent=item.caption||`Photo ${index+1}`;
+      text.append(strong);
+      const actions=document.createElement('div'); actions.className='admin-row-actions';
+      const specs=[
+        ['←','Move left',()=>moveGalleryItem(index,-1)],
+        ['→','Move right',()=>moveGalleryItem(index,1)],
+        ['✎','Edit caption',()=>editGalleryCaption(item)],
+        ['×','Delete photo',()=>deleteGalleryItem(item)]
+      ];
+      specs.forEach(([label,title,handler])=>{
+        const b=document.createElement('button'); b.type='button'; b.textContent=label; b.title=title; b.setAttribute('aria-label',title); b.addEventListener('click',handler); actions.append(b);
+      });
+      row.append(img,text,actions); adminGalleryList.append(row);
+    });
+  }
+
+  async function moveGalleryItem(index,delta){
+    const next=index+delta;
+    if(!galleryClient || next<0 || next>=galleryItems.length) return;
+    const reordered=[...galleryItems];
+    [reordered[index],reordered[next]]=[reordered[next],reordered[index]];
+    if(adminStatus) adminStatus.textContent='Reordering…';
+    const updates=reordered.map((item,i)=>galleryClient.from('gallery_items').update({sort_order:(i+1)*10}).eq('id',item.id));
+    const results=await Promise.all(updates);
+    const failed=results.find(r=>r.error);
+    if(failed){ adminStatus.textContent='Could not reorder: '+failed.error.message; return; }
+    await loadGallery();
+    adminStatus.textContent='Order updated.';
+  }
+
+  async function editGalleryCaption(item){
+    if(!galleryClient) return;
+    const caption=prompt('Photo caption:',item.caption||'');
+    if(caption===null) return;
+    adminStatus.textContent='Saving caption…';
+    const {error}=await galleryClient.from('gallery_items').update({caption:caption.trim()||null}).eq('id',item.id);
+    if(error){ adminStatus.textContent='Could not save caption: '+error.message; return; }
+    await loadGallery(); adminStatus.textContent='Caption updated.';
+  }
+
+  async function deleteGalleryItem(item){
+    if(!galleryClient || !confirm('Delete this photo from the Gallery?')) return;
+    adminStatus.textContent='Deleting…';
+    const {error:storageError}=await galleryClient.storage.from(GALLERY_BUCKET).remove([item.storage_path]);
+    if(storageError){ adminStatus.textContent='Could not delete image: '+storageError.message; return; }
+    const {error:rowError}=await galleryClient.from('gallery_items').delete().eq('id',item.id);
+    if(rowError){ adminStatus.textContent='Image deleted, but its Gallery record could not be removed: '+rowError.message; return; }
+    await loadGallery(); adminStatus.textContent='Photo deleted.';
+  }
+
+  async function resizeImageForGallery(file){
+    if(!file.type.startsWith('image/')) throw new Error(`${file.name} is not an image.`);
+    const maxDimension=1600;
+    let bitmap;
+    try{ bitmap=await createImageBitmap(file,{imageOrientation:'from-image'}); }
+    catch{ bitmap=await createImageBitmap(file); }
+    const scale=Math.min(1,maxDimension/Math.max(bitmap.width,bitmap.height));
+    const w=Math.max(1,Math.round(bitmap.width*scale));
+    const h=Math.max(1,Math.round(bitmap.height*scale));
+    const c=document.createElement('canvas'); c.width=w; c.height=h;
+    const cctx=c.getContext('2d',{alpha:false});
+    cctx.drawImage(bitmap,0,0,w,h); bitmap.close?.();
+    const blob=await new Promise(resolve=>c.toBlob(resolve,'image/webp',.84));
+    if(!blob) throw new Error('Could not prepare image for upload.');
+    return blob;
+  }
+
+  async function uploadGalleryFiles(){
+    if(!galleryClient || !gallerySession){ adminStatus.textContent='Please sign in first.'; return; }
+    const files=[...(adminFiles?.files||[])];
+    if(!files.length){ adminStatus.textContent='Choose at least one photo.'; return; }
+    if(files.length>12){ adminStatus.textContent='Please upload 12 or fewer photos at a time.'; return; }
+    adminUpload.disabled=true;
+    const oneCaption=(adminCaption?.value||'').trim();
+    let nextOrder=(galleryItems.reduce((m,x)=>Math.max(m,Number(x.sort_order)||0),0)||0)+10;
+    try{
+      for(let i=0;i<files.length;i++){
+        const file=files[i];
+        adminStatus.textContent=`Preparing ${i+1} of ${files.length}…`;
+        const blob=await resizeImageForGallery(file);
+        const path=`uploads/${Date.now()}-${crypto.randomUUID()}.webp`;
+        adminStatus.textContent=`Uploading ${i+1} of ${files.length}…`;
+        const {error:uploadError}=await galleryClient.storage.from(GALLERY_BUCKET).upload(path,blob,{contentType:'image/webp',cacheControl:'31536000',upsert:false});
+        if(uploadError) throw uploadError;
+        const fallback=file.name.replace(/\.[^.]+$/,'').replace(/[-_]+/g,' ').trim();
+        const caption=files.length===1 && oneCaption ? oneCaption : fallback;
+        const {error:insertError}=await galleryClient.from('gallery_items').insert({storage_path:path,caption:caption||null,sort_order:nextOrder});
+        if(insertError){ await galleryClient.storage.from(GALLERY_BUCKET).remove([path]); throw insertError; }
+        nextOrder+=10;
+      }
+      if(adminFiles) adminFiles.value=''; if(adminCaption) adminCaption.value='';
+      await loadGallery(); adminStatus.textContent=`Uploaded ${files.length} photo${files.length===1?'':'s'}.`;
+    }catch(err){ console.error(err); adminStatus.textContent='Upload failed: '+(err?.message||'Unknown error'); }
+    finally{ adminUpload.disabled=false; }
+  }
+
   adminButton?.addEventListener('click',()=>adminDialog?.showModal());
   adminClose?.addEventListener('click',()=>adminDialog?.close());
   adminDialog?.addEventListener('click',e=>{ if(e.target===adminDialog) adminDialog.close(); });
-  adminSubmit?.addEventListener('click',()=>{
-    const enteredEmail = document.getElementById('admin-email')?.value?.trim().toLowerCase();
-    if(enteredEmail !== ADMIN_EMAIL){
-      adminStatus.textContent='This account is not authorized for gallery administration.';
-      return;
-    }
-    adminStatus.textContent='Admin email configured. Connect Supabase to activate secure password validation and uploads.';
+  adminSubmit?.addEventListener('click',async()=>{
+    if(!galleryClient){ adminStatus.textContent='Gallery service is still loading. Try again in a moment.'; return; }
+    const password=adminPassword?.value||'';
+    if(!password){ adminStatus.textContent='Enter your password.'; return; }
+    adminSubmit.disabled=true; adminStatus.textContent='Signing in…';
+    const {data,error}=await galleryClient.auth.signInWithPassword({email:ADMIN_EMAIL,password});
+    adminSubmit.disabled=false;
+    if(error){ adminStatus.textContent='Sign-in failed. Check your password.'; return; }
+    if(!isAdminSession(data.session)){ await galleryClient.auth.signOut(); adminStatus.textContent='This account is not authorized.'; return; }
+    if(adminPassword) adminPassword.value='';
+    await applyAdminSession(data.session); adminStatus.textContent='Signed in.';
   });
+  adminPassword?.addEventListener('keydown',e=>{ if(e.key==='Enter') adminSubmit?.click(); });
+  adminSignout?.addEventListener('click',async()=>{ if(galleryClient) await galleryClient.auth.signOut(); await applyAdminSession(null); adminStatus.textContent='Signed out.'; });
+  adminUpload?.addEventListener('click',uploadGalleryFiles);
+
+  async function initGalleryBackend(){
+    try{
+      // Dynamic import keeps Supabase off the critical rendering path.
+      const {createClient}=await import('https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/+esm');
+      galleryClient=createClient(SUPABASE_URL,SUPABASE_PUBLISHABLE_KEY,{auth:{persistSession:true,autoRefreshToken:true,detectSessionInUrl:true}});
+      const {data:{session}}=await galleryClient.auth.getSession();
+      await applyAdminSession(session);
+      galleryClient.auth.onAuthStateChange((_event,session)=>{ setTimeout(()=>applyAdminSession(session),0); });
+      await loadGallery();
+    }catch(err){
+      console.error('Gallery backend initialization failed',err);
+      galleryItems=[]; renderGallery();
+      if(galleryNote) galleryNote.textContent='Gallery is temporarily unavailable. Please try again later.';
+      if(adminStatus) adminStatus.textContent='Gallery service could not be reached.';
+    }
+  }
+  // Start the remote Gallery only after the main page and hero assets are ready.
+  if(document.readyState==='complete') setTimeout(initGalleryBackend,0);
+  else addEventListener('load',()=>setTimeout(initGalleryBackend,0),{once:true});
 
   resize(); updateScroll(); revealObserver(); requestAnimationFrame(render);
 })();

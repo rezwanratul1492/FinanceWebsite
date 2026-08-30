@@ -1,38 +1,27 @@
-# Supabase Gallery integration — not yet activated
+# Supabase Gallery setup (v17)
 
-The current website already contains:
+The website already contains the project URL and **publishable** key. No secret/service-role key is used in the browser.
 
-- Gallery section
-- horizontal photo stream
-- left/right controls
-- Admin button
-- login dialog
-- fixed authorized email: dr.rezwanfmu@gmail.com
+## One-time setup
 
-What is intentionally NOT stored in GitHub:
+1. Supabase Dashboard -> **Authentication -> Users**: create/invite `dr.rezwanfmu@gmail.com` and set a strong password.
+2. Authentication -> Providers -> Email: if only you should have an account, disable public sign-ups after your user exists.
+3. Storage -> **New bucket** -> name it exactly `gallery` -> make it **Public**.
+4. SQL Editor -> New query -> paste the full contents of `SUPABASE_SETUP.sql` -> Run.
+5. Authentication -> URL Configuration:
+   - Site URL: `https://rezwanratul1492.github.io/FinanceWebsite/`
+   - Redirect URL: add the same URL.
+6. Publish the GitHub files.
 
-- admin password
-- database password
-- Supabase secret key
-- service_role key
+## Test
 
-## When you are ready to activate Gallery Admin
+Open the live website -> Gallery -> Admin -> sign in.
+You should then see upload, reorder, edit-caption, and delete controls.
 
-Create/configure the Supabase project, then provide only:
+The browser resizes uploaded images to a maximum dimension of 1600 px and WebP quality ~84% before upload, which keeps Gallery loading much faster.
 
-1. Project URL
-2. Publishable key (or legacy anon public key)
+## Security
 
-The browser may contain the publishable key. Security must be enforced by Supabase Auth + Row Level Security.
-
-The final integration will support:
-
-- secure sign-in
-- upload one or multiple photos
-- captions
-- delete photos
-- reorder photos
-- visitor-only viewing
-- horizontal Gallery navigation
-
-Do not add the Supabase service_role key to GitHub Pages.
+- The publishable key in `index.html` is intended for browser use.
+- Never put a Supabase `service_role` / secret key in GitHub or the website.
+- RLS policies in `SUPABASE_SETUP.sql` enforce that only `dr.rezwanfmu@gmail.com` can change gallery data/files.

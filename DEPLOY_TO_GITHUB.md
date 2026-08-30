@@ -1,80 +1,18 @@
-# Deploy this release to GitHub Pages
+# Deploy v17 to GitHub Pages
 
-Repository:
-https://github.com/rezwanratul1492/FinanceWebsite
+Repository: https://github.com/rezwanratul1492/FinanceWebsite
+Public site: https://rezwanratul1492.github.io/FinanceWebsite/
 
-Expected public URL:
-https://rezwanratul1492.github.io/FinanceWebsite/
+1. Unzip the v17 release.
+2. In GitHub, open `rezwanratul1492/FinanceWebsite` and switch to `main`.
+3. Upload the CONTENTS of the release folder to the repository root, replacing the older versions.
+4. Make sure these are at the repository root: `index.html`, `404.html`, `.nojekyll`, `robots.txt`, `sitemap.xml`, `site.webmanifest`, plus the `assets/` folder.
+5. Commit the changes.
+6. If Pages is not already enabled: Settings -> Pages -> Deploy from a branch -> `main` -> `/ (root)` -> Save.
+7. Wait a few minutes, then hard-refresh the public URL (Ctrl+F5 / Cmd+Shift+R).
 
-## A. Upload/update the website files
+## Important
+Do not upload the enclosing `rezwan-finance-website-github-v17` folder as a nested folder. Upload its contents so `index.html` is directly at the repository root.
 
-1. Download and unzip `rezwan-finance-website-github-v16.zip`.
-2. Open your GitHub repository:
-   https://github.com/rezwanratul1492/FinanceWebsite
-3. Make sure you are on the `main` branch.
-4. Click **Add file → Upload files**.
-5. Upload the CONTENTS of this release folder, not an extra enclosing folder.
-
-At the repository root you should see files such as:
-
-- `index.html`
-- `404.html`
-- `README.md`
-- `robots.txt`
-- `sitemap.xml`
-- `site.webmanifest`
-- `.nojekyll`
-- `assets/`
-
-6. Commit the upload to `main`.
-
-If a file with the same name already exists, upload the new version so it replaces the older copy. Old unused draft HTML files do not affect the live site as long as the correct `index.html` is at the repository root.
-
-## B. Enable GitHub Pages
-
-1. Open the repository **Settings**.
-2. In the left sidebar, open **Pages**.
-3. Under **Build and deployment**, set **Source** to **Deploy from a branch**.
-4. Select branch: `main`.
-5. Select folder: `/(root)`.
-6. Click **Save**.
-
-GitHub Pages will publish the root `index.html`.
-
-## C. Open the site
-
-After deployment, visit:
-
-https://rezwanratul1492.github.io/FinanceWebsite/
-
-If you already had Pages enabled, uploading/committing the new files is enough; GitHub will redeploy automatically.
-
-## D. Updating the site later
-
-### Small text changes
-
-On GitHub:
-
-1. Open `index.html`.
-2. Click the pencil/edit button.
-3. Use browser search (Ctrl+F) to find the existing wording.
-4. Make the edit.
-5. Commit changes.
-
-The website will redeploy automatically.
-
-### Larger design/content changes
-
-Replace `index.html` with the newer version I prepare for you, then commit it.
-
-### Profile photo
-
-The current release still uses an MR placeholder. The future image can live at:
-
-`assets/profile/profile.webp`
-
-and the hero can be updated to reference that file.
-
-### Gallery
-
-The visible Gallery stream works now with placeholders. The Admin button becomes functional only after the Supabase setup is completed.
+## Supabase
+The public project URL and publishable key are already configured in `index.html`. You still need the one-time database/storage/auth setup in `SUPABASE_GALLERY_SETUP.md`.

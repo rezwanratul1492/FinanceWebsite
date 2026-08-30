@@ -1,37 +1,18 @@
-QUICK EDIT GUIDE — REZWAN FINANCE WEBSITE
+QUICK EDIT GUIDE — v17
 
-LIVE REPOSITORY:
-https://github.com/rezwanratul1492/FinanceWebsite
+TEXT CHANGES
+1. GitHub -> FinanceWebsite -> index.html -> Edit (pencil).
+2. Ctrl+F/Cmd+F the text you want to change.
+3. Edit it and Commit changes.
 
-LIVE WEBSITE:
-https://rezwanratul1492.github.io/FinanceWebsite/
+GALLERY PHOTOS
+After Supabase setup, do NOT edit GitHub for normal Gallery management.
+Open the website -> Gallery -> Admin -> sign in.
+You can upload, edit captions, reorder, and delete photos there.
 
-CURRENT SECTION ORDER:
-Home
-About
-Experience
-Research
-Teaching
-Academic Service
-Awards
-Hobbies
-Gallery
-Contact
+PROFILE PHOTO
+Current file: assets/profile/rezwan-profile.webp
+If you want a different profile image later, replace that file with another WebP using the same filename, or ask ChatGPT to prepare it.
 
-FOR A SIMPLE TEXT CHANGE:
-1. Open the GitHub repository.
-2. Open index.html.
-3. Click Edit (pencil icon).
-4. Press Ctrl+F and search for the exact existing text.
-5. Change only the text you need.
-6. Commit changes.
-
-DO NOT PLACE PASSWORDS OR SUPABASE SECRET/SERVICE_ROLE KEYS IN index.html.
-
-PROFILE PHOTO:
-The current hero uses an MR placeholder. Keep the final image under assets/profile/ once added.
-
-GALLERY:
-The horizontal gallery is already in index.html.
-The Admin button is only a secure-login placeholder until Supabase is connected.
-After Supabase is connected, gallery photos will be uploaded from the website rather than manually edited in GitHub.
+MAJOR DESIGN / MORPHING CHANGES
+Ask ChatGPT to update the site and replace index.html rather than editing the Canvas code manually.
