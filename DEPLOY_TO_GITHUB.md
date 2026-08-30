@@ -16,3 +16,7 @@ Do not upload the enclosing `rezwan-finance-website-github-v17` folder as a nest
 
 ## Supabase
 The public project URL and publishable key are already configured in `index.html`. You still need the one-time database/storage/auth setup in `SUPABASE_GALLERY_SETUP.md`.
+
+
+### Admin-managed profile photo
+After Supabase is configured, future profile-photo changes happen from **Gallery > Admin** on the live website. They do not require another GitHub deployment.

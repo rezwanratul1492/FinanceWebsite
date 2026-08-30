@@ -1,5 +1,6 @@
 -- Rezwan Finance Website: Gallery database + Row Level Security
 -- Run this in Supabase Dashboard -> SQL Editor after creating a PUBLIC Storage bucket named: gallery
+-- The same bucket stores Gallery photos plus the admin-managed profile photo at profile/current.webp.
 
 create table if not exists public.gallery_items (
   id uuid primary key default gen_random_uuid(),

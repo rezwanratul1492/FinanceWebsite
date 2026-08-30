@@ -25,3 +25,9 @@ The browser resizes uploaded images to a maximum dimension of 1600 px and WebP q
 - The publishable key in `index.html` is intended for browser use.
 - Never put a Supabase `service_role` / secret key in GitHub or the website.
 - RLS policies in `SUPABASE_SETUP.sql` enforce that only `dr.rezwanfmu@gmail.com` can change gallery data/files.
+
+
+## Profile photo
+No additional bucket or SQL policy is required. The admin panel stores the current profile photo at `profile/current.webp` inside the same public `gallery` bucket. The existing authenticated insert/update policies cover this file.
+
+After login, choose **Profile photo > Update profile photo**. The website will load that Supabase image automatically on future visits, while retaining the embedded portrait as a fallback.
