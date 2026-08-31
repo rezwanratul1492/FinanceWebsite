@@ -1,3 +1,5 @@
+# Rezwan Finance Website - v21
+
 ## v18 profile-image fix
 The hero profile image is embedded directly in `index.html`, so it cannot break because of a missing relative asset path. The separate WebP asset remains included as a backup/source file.
 
@@ -39,3 +41,7 @@ Additional v20 optimizations:
 - the decorative noise blend layer is automatically disabled only on very large displays.
 
 These changes are designed to preserve the same visible morph shapes and color transitions while reducing GPU/CPU work on 1440p, 4K, ultrawide, Retina, and larger displays.
+
+
+## v21 external-monitor performance
+The morph renderer now syncs to the display refresh rate, uses time-based interpolation, adaptive background resolution, and removes live backdrop blur on large displays. See `PERFORMANCE_NOTES.md`.

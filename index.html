@@ -68,7 +68,7 @@ a { color: inherit; }
 button, a { -webkit-tap-highlight-color: transparent; }
 .sr-only { position: absolute; width:1px; height:1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; }
 
-#morph-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display:block; }
+#morph-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 0; display:block; transform:translateZ(0); backface-visibility:hidden; contain:strict; }
 .noise { position: fixed; inset:0; z-index:1; pointer-events:none; opacity:.065; background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 180 180' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.6'/%3E%3C/svg%3E"); mix-blend-mode:soft-light; }
 .vignette { position: fixed; inset:0; z-index:2; pointer-events:none; box-shadow: inset 0 0 180px rgba(0,0,0,.58); }
 
@@ -191,9 +191,22 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
 .awards-list small { color:#8e999e; font-size:10px; line-height:1.45; }
 @media (max-width: 560px) { .awards-list { grid-template-columns:1fr; } .awards-list article { min-height:108px; } }
 
-/* Performance mode is enabled automatically only when the canvas must be heavily downscaled.
-   It removes the decorative noise blend layer; all core morph visuals remain. */
+/* External/large-display performance mode. The abstract canvas keeps the same morph geometry,
+   while expensive live backdrop blurs are replaced with visually similar opaque glass surfaces. */
 .perf-large .noise { display:none; }
+.perf-large .content-card {
+  -webkit-backdrop-filter:none; backdrop-filter:none;
+  background:linear-gradient(145deg, rgba(5,13,18,.92), rgba(9,19,25,.84));
+}
+.perf-large .site-header.scrolled {
+  -webkit-backdrop-filter:none; backdrop-filter:none; background:rgba(5,12,17,.94);
+}
+.perf-large .button.ghost,
+.perf-large .gallery-admin-button,
+.perf-large .gallery-arrow { -webkit-backdrop-filter:none; backdrop-filter:none; }
+.perf-large .button.ghost { background:rgba(11,22,31,.80); }
+.perf-large .gallery-admin-button { background:rgba(9,20,29,.86); }
+.perf-large .gallery-arrow { background:rgba(5,12,18,.94); }
 
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior:auto; }
@@ -1012,7 +1025,7 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
   <script>
 (() => {
   const canvas = document.getElementById('morph-canvas');
-  const ctx = canvas.getContext('2d', { alpha: false });
+  const ctx = canvas.getContext('2d', { alpha: false, desynchronized: true });
   const sections = [...document.querySelectorAll('.story-section')];
   const navLinks = [...document.querySelectorAll('.site-nav a')];
   const meter = document.getElementById('meter-progress');
@@ -1236,13 +1249,16 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
   let dpr=1,W=0,H=0;
   let scrollProgress=0, targetProgress=0;
   let mx=.5,my=.5,targetMx=.5,targetMy=.5;
-  let renderQueued=false, lastFrameTime=0;
+  let renderQueued=false, lastRenderTime=0, performanceMode=false;
 
-  // Keep the abstract canvas within a fixed pixel budget on every display.
-  // Text, cards, photos and the rest of the DOM remain native-resolution.
-  const MAX_CANVAS_PIXELS=2200000;
-  const MAX_CANVAS_SCALE=1.35;
-  const MIN_CANVAS_SCALE=.28;
+  // The abstract background gets a resolution-independent pixel budget.
+  // Large displays intentionally render the soft background near 1500px wide, then upscale it.
+  // Text, photos and all DOM content remain at the monitor's native browser resolution.
+  const STANDARD_CANVAS_PIXELS=2000000;
+  const LARGE_CANVAS_PIXELS=1300000;
+  const LARGE_DISPLAY_AREA=2600000;
+  const MAX_CANVAS_SCALE=1.20;
+  const MIN_CANVAS_SCALE=.24;
 
   function requestRender(){
     if(renderQueued) return;
@@ -1253,14 +1269,19 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
   function resize(){
     W=Math.max(1,innerWidth); H=Math.max(1,innerHeight);
     const rawDpr=devicePixelRatio||1;
-    const pixelBudgetScale=Math.sqrt(MAX_CANVAS_PIXELS/(W*H));
+    const displayArea=W*H;
+    const pixelBudget=displayArea>LARGE_DISPLAY_AREA ? LARGE_CANVAS_PIXELS : STANDARD_CANVAS_PIXELS;
+    const pixelBudgetScale=Math.sqrt(pixelBudget/displayArea);
     dpr=Math.min(rawDpr,MAX_CANVAS_SCALE,pixelBudgetScale);
     dpr=Math.max(MIN_CANVAS_SCALE,dpr);
+    performanceMode=displayArea>LARGE_DISPLAY_AREA || dpr<.86;
     canvas.width=Math.max(1,Math.round(W*dpr));
     canvas.height=Math.max(1,Math.round(H*dpr));
     canvas.style.width=W+'px'; canvas.style.height=H+'px';
     ctx.setTransform(dpr,0,0,dpr,0,0);
-    document.documentElement.classList.toggle('perf-large',dpr<.72);
+    document.documentElement.classList.toggle('perf-large',performanceMode);
+    if(performanceMode){ mx=targetMx=.5; my=targetMy=.5; }
+    lastRenderTime=0;
     requestRender();
   }
 
@@ -1417,17 +1438,18 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
   function render(now=0){
     renderQueued=false;
 
-    // Cap animation work around 60 fps even on 120/144 Hz monitors.
-    if(!reduceMotion && now-lastFrameTime < 15){
-      requestRender();
-      return;
-    }
-    lastFrameTime=now;
+    // requestAnimationFrame is intentionally NOT frame-capped. It follows the display's own
+    // refresh cadence (60/75/120/144/165 Hz, etc.). Interpolation is time-based, so motion
+    // has the same speed and damping even if a frame is occasionally missed.
+    const dt=lastRenderTime ? Math.min(40,Math.max(1,now-lastRenderTime)) : 16.67;
+    lastRenderTime=now;
+    const progressAlpha=reduceMotion ? 1 : 1-Math.exp(-dt/50);
+    const pointerAlpha=reduceMotion ? 1 : 1-Math.exp(-dt/85);
 
     const prevProgress=scrollProgress, prevMx=mx, prevMy=my;
-    scrollProgress += (targetProgress-scrollProgress)*(reduceMotion?1:.12);
-    mx += (targetMx-mx)*(reduceMotion?1:.085);
-    my += (targetMy-my)*(reduceMotion?1:.085);
+    scrollProgress += (targetProgress-scrollProgress)*progressAlpha;
+    mx += (targetMx-mx)*pointerAlpha;
+    my += (targetMy-my)*pointerAlpha;
     const {i,t}=getSegment(scrollProgress);
     const te=ease(t);
     const pA=palettes[i],pB=palettes[i+1];
@@ -1440,9 +1462,13 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
     ctx.fillStyle=bg;ctx.globalAlpha=1;ctx.fillRect(0,0,W,H);
 
     const accent=mixColor(pA[2],pB[2],te);
-    const bloom=ctx.createRadialGradient(W*(.77-(scrollProgress*.24)),H*(.25+scrollProgress*.18),0,W*.64,H*.38,Math.min(W,H)*.52);
-    bloom.addColorStop(0,accent); bloom.addColorStop(.30,accent); bloom.addColorStop(1,'rgba(0,0,0,0)');
-    ctx.save(); ctx.globalAlpha=.105; ctx.fillStyle=bloom; ctx.fillRect(0,0,W,H); ctx.restore();
+    // The second full-screen radial gradient is only used when there is ample render headroom.
+    // The main gradient already carries the full scene palette on large/external displays.
+    if(!performanceMode){
+      const bloom=ctx.createRadialGradient(W*(.77-(scrollProgress*.24)),H*(.25+scrollProgress*.18),0,W*.64,H*.38,Math.min(W,H)*.52);
+      bloom.addColorStop(0,accent); bloom.addColorStop(.30,accent); bloom.addColorStop(1,'rgba(0,0,0,0)');
+      ctx.save(); ctx.globalAlpha=.105; ctx.fillStyle=bloom; ctx.fillRect(0,0,W,H); ctx.restore();
+    }
 
     // Scene-specific ambient forms crossfade while the actual point geometry morphs.
     const curAlpha=1-smooth(clamp(t*1.55,0,1));
@@ -1482,7 +1508,12 @@ h1 em, h2 em { color:#e4bd79; font-weight:500; }
 
   addEventListener('resize',resize,{passive:true});
   addEventListener('scroll',updateScroll,{passive:true});
-  addEventListener('pointermove',e=>{targetMx=e.clientX/innerWidth;targetMy=e.clientY/innerHeight;requestRender()},{passive:true});
+  addEventListener('pointermove',e=>{
+    // Mouse parallax is decorative; on large displays it would otherwise keep the full-screen
+    // canvas awake for every tiny pointer movement.
+    if(performanceMode) return;
+    targetMx=e.clientX/innerWidth;targetMy=e.clientY/innerHeight;requestRender();
+  },{passive:true});
   menuToggle.addEventListener('click',()=>{const open=nav.classList.toggle('open');menuToggle.setAttribute('aria-expanded',String(open));});
   navLinks.forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');menuToggle.setAttribute('aria-expanded','false');}));
 
